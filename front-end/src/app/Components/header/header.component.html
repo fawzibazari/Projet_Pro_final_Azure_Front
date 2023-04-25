@@ -1,0 +1,26 @@
+<header class="d-flex flex-wrap align-item-center justify-content-center justify-content-md-between py-3 mb-4 border-buttom header-box">
+  <div class="col-md-3 mb-2">
+    <a class="navbar-brand" [routerLink]="['']" >
+      <img src="/assets/logo/PassionFroid.png" width="50" height="50" class="d-inline-block align-center" alt="">
+      PassionFroid
+    </a>
+  </div>
+  <ul class="nav col-12 col-md-auto mb-2 justify-content-center my-auto">
+    <li>
+      <a class="nav-link px-2 link-secondary" [routerLink]="['']">Accueil</a>
+    </li>
+    <li>
+      <a class="nav-link px-2 link-secondary" href="#">Features</a>
+    </li>
+    <li>
+      <a class="nav-link px-2 link-secondary" href="#">Pricing</a>
+    </li>
+    <li>
+      <a class="nav-link px-2 link-secondary" href="#">About</a>
+    </li>
+  </ul>
+  <div class="col-md-3 text-end my-auto me-2">
+    <button class="btn btn-warning me-2" [routerLink]="['/login']">Connexion</button>
+    <button class="btn btn-info" [routerLink]="['/signup']">Inscription</button>
+  </div>
+</header>

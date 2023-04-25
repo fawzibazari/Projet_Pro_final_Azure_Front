@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="row">
+      <div class="col-md-11 mt-60 mx-md-auto">
+          <div class="login-box bg-white pl-lg-5 pl-0">
+              <div class="row no-gutters align-items-center">
+                  <div class="col-md-6">
+                      <div class="form-wrap bg-white">
+                          <h4 class="btm-sep pb-3 mb-5">Inscription</h4>
+                          <form>
+                            <div class="form-group">
+                              <label for="email">Adresse e-mail</label>
+                              <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entrez votre adresse e-mail">
+                              <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                            </div>
+                            <div class="form-group">
+                              <label for="password">Mot de passe</label>
+                              <input type="password" class="form-control" id="password" placeholder="Mot de passe">
+                            </div>
+                            <div class="">
+                              <button type="submit" class="btn btn-info mt-3">Inscription</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="content text-center">
+                          <div class="border-bottom pb-5 mb-5">
+                              <h3 class="c-black pb-5">Vous avez déjà un compte ?</h3>
+                              <a class="btn btn-outline-warning" [routerLink]="['/login']">Connexion</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
