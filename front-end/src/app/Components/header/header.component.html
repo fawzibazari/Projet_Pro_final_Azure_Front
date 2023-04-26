@@ -10,7 +10,7 @@
       <a class="nav-link px-2 link-secondary" [routerLink]="['']">Accueil</a>
     </li>
     <li>
-      <a class="nav-link px-2 link-secondary" href="#">Features</a>
+      <a class="nav-link px-2 link-secondary" [routerLink]="['dashboard']">Dashboard</a>
     </li>
     <li>
       <a class="nav-link px-2 link-secondary" href="#">Pricing</a>
@@ -20,7 +20,7 @@
     </li>
   </ul>
   <div class="col-md-3 text-end my-auto me-2">
-    <button class="btn btn-warning me-2" [routerLink]="['/login']">Connexion</button>
-    <button class="btn btn-info" [routerLink]="['/signup']">Inscription</button>
+    <button class="btn btn-login me-2" [routerLink]="['/login']">Connexion</button>
+    <button class="btn btn-signup" [routerLink]="['/signup']">Inscription</button>
   </div>
 </header>

@@ -3,3 +3,29 @@
           box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
+
+/* btn login color purple */
+.btn-login {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+  color: white;
+}
+
+/* btn login hover color */
+.btn-login:hover {
+  background-color: #7f57c9;
+  border-color: #8157cf;
+}
+
+/* btn-outline signup color purple */
+.btn-signup {
+  color: #6f42c1;
+  border-color: #6f42c1;
+}
+
+/* btn-outline signup hover color */
+.btn-signup:hover {
+  background-color: #8157cf;
+  border-color: #8157cf;
+  color: white;
+}
