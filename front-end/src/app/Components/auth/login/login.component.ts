@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { AuthService } from '../../../Services/auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -7,9 +12,46 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  loginForm!: FormGroup;
+
+
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.loginForm = this.createFormGroup();
+    console.log(this.loginForm);
+  }
+
+  createFormGroup(): FormGroup {
+    return new FormGroup({
+      firstname: new FormControl('', [Validators.required]),
+      mail: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+    });
+  }
+
+  login(): void {
+    console.log(this.loginForm.value);
+    this.authService.login(
+      this.loginForm.value.firstname,
+      this.loginForm.value.mail,
+      this.loginForm.value.password).subscribe(
+        response => {
+          if (response.success) {
+            // connexion réussie, stocker le jeton d'authentification
+            localStorage.setItem('token', response.token);
+            console.log("login success");
+            // rediriger vers la page de dashboard
+            this.router.navigate(['/dashboard']);
+          } else {
+            // afficher un message d'erreur
+            alert(response.message);
+          }
+        }
+      );
   }
 
 }

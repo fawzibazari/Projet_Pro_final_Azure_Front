@@ -6,20 +6,20 @@
                   <div class="col-md-6">
                       <div class="form-wrap bg-white">
                           <h4 class="btm-sep pb-3 mb-5">Connexion</h4>
-                          <form>
+                          <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
                             <div class="form-group">
-                              <label for="email">Adresse e-mail</label>
-                              <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entrez votre adresse e-mail">
+                              <label for="firstname">Utilisateur</label>
+                              <input type="firstname" class="form-control" id="firstname" formControlName="firstname" aria-describedby="firstnameHelp" placeholder="Entrez votre nom d'utilisateur">
+                            </div>
+                            <div class="form-group">
+                              <label for="mail">Adresse e-mail</label>
+                              <input type="mail" class="form-control" id="mail" formControlName="mail" aria-describedby="mailHelp" placeholder="Entrez votre adresse e-mail">
                               <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                             </div>
                             <div class="form-group">
                               <label for="password">Mot de passe</label>
-                              <input type="password" class="form-control" id="password" placeholder="Mot de passe">
+                              <input type="password" class="form-control" id="password" formControlName="password" placeholder="Mot de passe">
                             </div>
-                            <!-- <div class="form-check">
-                              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                              <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                            </div> -->
                             <div class="">
                               <button type="submit" class="btn btn-login mt-3">Connexion</button>
                             </div>
