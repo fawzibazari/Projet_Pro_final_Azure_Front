@@ -9,6 +9,7 @@ export class DashboardComponent implements OnInit {
 
   DJANGO_SERVER: string = "http://127.0.0.1:8000";
   imageSrc: string = "";
+  fileName: any;
 
 
   constructor( 
@@ -19,9 +20,10 @@ export class DashboardComponent implements OnInit {
 
   handleInputChange(e: any) {
     var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-    //console.log(file);
+    console.log(file);
     var pattern = /image-*/;
     var reader = new FileReader();
+    //console.log("file name: "+file.name);
 
     if (!file.type.match(pattern)) {
       alert('invalid format');
@@ -29,20 +31,20 @@ export class DashboardComponent implements OnInit {
     }
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
+    this.fileName = file.name;
   }
 
   _handleReaderLoaded(e: any) {
       let reader = e.target;
       this.imageSrc = reader.result;
-      //console.log(this.imageSrc);
 
       const base64Image =this.imageSrc.split(",")[1];
       const fileType = this.imageSrc.split("/")[1].split(";")[0];
       //console.log("file type --------->"+ fileType);
       //console.log(base64Image);
-      const url = this.DJANGO_SERVER + "/api/upload";
+      const url = this.DJANGO_SERVER + "/api/create";
 
-      this.httpClient.post(url, {filetype: fileType,image: base64Image}).subscribe( 
+      this.httpClient.post(url, {filename: this.fileName.split(".")[0], extension: fileType,img: base64Image}).subscribe( 
         res => {
           console.log(res);
         },
