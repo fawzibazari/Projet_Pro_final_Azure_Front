@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { UploadService } from '../../Services/upload.service';
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -10,44 +8,50 @@ import { UploadService } from '../../Services/upload.service';
 export class DashboardComponent implements OnInit {
 
   DJANGO_SERVER: string = "http://127.0.0.1:8000";
-  form!: FormGroup;
-  response: any;
-  imageURL: string = "";
+  imageSrc: string = "";
 
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private uploadService: UploadService
+  constructor( 
+    private httpClient: HttpClient
   ) { }
 
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      profile: ['']
-    });
-  }
+  ngOnInit(): void {}
 
-  onChange(event: any) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.form.get('profile')?.setValue(file);
+  handleInputChange(e: any) {
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    //console.log(file);
+    var pattern = /image-*/;
+    var reader = new FileReader();
+
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
     }
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
   }
 
-  onSubmit() {
-    const formData = new FormData();
-    formData.append('file', this.form.get('profile')?.value);
+  _handleReaderLoaded(e: any) {
+      let reader = e.target;
+      this.imageSrc = reader.result;
+      //console.log(this.imageSrc);
 
-    this.uploadService.upload(formData).subscribe(
-      (res) => {
-        this.response = res;
-        this.imageURL = `${this.DJANGO_SERVER}${res.file}`;
-        console.log(res);
-        console.log(this.imageURL)
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+      const base64Image =this.imageSrc.split(",")[1];
+      const fileType = this.imageSrc.split("/")[1].split(";")[0];
+      //console.log("file type --------->"+ fileType);
+      //console.log(base64Image);
+      const url = this.DJANGO_SERVER + "/api/upload";
+
+      this.httpClient.post(url, {filetype: fileType,image: base64Image}).subscribe( 
+        res => {
+          console.log(res);
+        },
+        err => {
+          console.log(err);
+        }
+      );
   }
+
+
 
 }

@@ -1,14 +1,14 @@
 <div class="container">
   <div class="row">
     <div class="mb-3">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
         <label for="formFileMultiple" class="form-label">Charger des images</label>
-        <input class="form-control" type="file" name="profile" (change)="onChange($event)" id="formFileMultiple" multiple>
-        <button type="submit" class="btn btn-secondary mt-2" data-toggle="tooltip" data-placement="top" title="Charger l'image"><i class="bi bi-upload"></i></button>
-      </form>
+        <input class="form-control" type="file" accept="image/*" (change)="handleInputChange($event)" id="formFileMultiple" multiple>
+        <!-- <button type="submit" class="btn btn-secondary mt-2" data-toggle="tooltip" data-placement="top" title="Charger l'image"><i class="bi bi-upload"></i></button> -->
+      
     </div>
   </div>
-  <div class="row" *ngIf="response && imageURL">
-    <img [src]="imageURL"/>
+  <div class="row">
+    <img [src]="imageSrc" style="max-width: 300px; max-height: 300px;"/>
   </div>
 </div>
