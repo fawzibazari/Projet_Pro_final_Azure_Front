@@ -1,14 +1,16 @@
-<div class="container">
-  <div class="row">
-    <div class="mb-3">
-
-        <label for="formFileMultiple" class="form-label">Charger des images</label>
-        <input class="form-control" type="file" accept="image/*" (change)="handleInputChange($event)" id="formFileMultiple" multiple>
-        <!-- <button type="submit" class="btn btn-secondary mt-2" data-toggle="tooltip" data-placement="top" title="Charger l'image"><i class="bi bi-upload"></i></button> -->
-      
+  <div class="container">
+    <div class="row d-flex m-auto">
+      <label for="formFileMultiple" class="form-label">Charger des images</label>
+      <div class="col-md-10">
+        <input class="form-control" type="file" #fileUpload accept="image/*" (change)="handleInputChange($event)"
+          id="formFileMultiple" multiple>
+      </div>
+      <div class="col-md-2 d-inline text-center">
+        <button type="submit" class="btn btn-secondary" (click)="handleSubmit($event)" data-toggle="tooltip"
+          data-placement="top" title="Charger l'image"><i class="bi bi-upload"></i></button>
+      </div>
+    </div>
+    <div class="form-control text-center mt-5" *ngIf="loaded">
+      <img [src]="imageSrc" class="rounded mx-auto d-block" />
     </div>
   </div>
-  <div class="row">
-    <img [src]="imageSrc" style="max-width: 300px; max-height: 300px;"/>
-  </div>
-</div>
