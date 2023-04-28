@@ -15,6 +15,8 @@ export class DashboardComponent implements OnInit {
   fileType: any;
   base64Image: any;
   loaded: boolean = false;
+  loading: boolean = false;
+  alertMessage: string = "";
 
 
   constructor( 
@@ -37,7 +39,7 @@ export class DashboardComponent implements OnInit {
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
     this.fileName = file.name;
-    this.loaded = true;
+    this.loaded = false;
   }
 
   _handleReaderLoaded(e: any) {
@@ -52,15 +54,19 @@ export class DashboardComponent implements OnInit {
 
   handleSubmit(e: any){
     const url = this.DJANGO_SERVER + "/api/create";
+    this.loading = true;
 
       this.httpClient.post(url, {filename: this.fileName.split(".")[0], extension: this.fileType,img: this.base64Image}).subscribe( 
         res => {
           console.log(res);
-          this.loaded = false;
+          this.loaded = true;
+          this.loading = false;
           this.fileUpload.nativeElement.value = "";
+          this.alertMessage = "L'image a été chargée avec succès !";
         },
         err => {
           console.log(err);
+          this.alertMessage = "Une erreur est survenue lors du chargement de l'image !";
         }
       );
   }

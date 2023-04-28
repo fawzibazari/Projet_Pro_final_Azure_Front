@@ -1,16 +1,31 @@
-  <div class="container">
-    <div class="row d-flex m-auto">
-      <label for="formFileMultiple" class="form-label">Charger des images</label>
-      <div class="col-md-10">
-        <input class="form-control" type="file" #fileUpload accept="image/*" (change)="handleInputChange($event)"
-          id="formFileMultiple" multiple>
+<div class="container">
+  <div class="row d-flex m-auto">
+    <label for="formFileMultiple" class="form-label">Charger des images</label>
+    <div class="col-md-10">
+      <input class="form-control" type="file" #fileUpload accept="image/*" (change)="handleInputChange($event)"
+        id="formFileMultiple" multiple>
+    </div>
+    <div class="col-md-1">
+      <div class="spinner-border" role="status" *ngIf="loading">
+        <span class="visually-hidden">Loading...</span>
       </div>
-      <div class="col-md-2 d-inline text-center">
-        <button type="submit" class="btn btn-secondary" (click)="handleSubmit($event)" data-toggle="tooltip"
-          data-placement="top" title="Charger l'image"><i class="bi bi-upload"></i></button>
+      <div class="check-icon d-inline" *ngIf="loaded">
+        <i class="bi bi-check-circle"></i>
       </div>
     </div>
-    <div class="form-control text-center mt-5" *ngIf="loaded">
+    <div class="col-md-1 d-inline text-center">
+      <button type="submit" class="btn btn-secondary" (click)="handleSubmit($event)" data-toggle="tooltip"
+        data-placement="top" title="Charger l'image"><i class="bi bi-upload"></i></button>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center mt-2">
+    <div class="alert alert-success" role="alert" *ngIf="loaded">
+      {{alertMessage}}
+    </div>
+  </div>
+  <div *ngIf="!loaded">
+    <div class="text-center mt-5">
       <img [src]="imageSrc" class="rounded mx-auto d-block" />
     </div>
   </div>
+</div>

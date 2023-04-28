@@ -3,3 +3,37 @@ img {
   max-width: 250px;
   height: auto;
 }
+
+.alert {
+  animation: hide-alert 3s forwards;
+}
+
+@keyframes hide-alert {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.check-icon {
+  color: green;
+  font-size: 35px;
+  margin: 10px auto;
+  line-height: 100%;
+  text-align: center;
+
+  animation: hide-check-icon 3s forwards;
+}
+
+@keyframes hide-check-icon {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    display: none;
+  }
+}
