@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  DJANGO_SERVER_URL = "http://127.0.0.1:8000/api";
+  DJANGO_SERVER_URL = "https://azuroo-api.azurewebsites.net/api";
 
   constructor(
     private http: HttpClient,

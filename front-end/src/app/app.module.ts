@@ -12,6 +12,7 @@ import { FooterComponent } from './Components/footer/footer.component';
 import { SignUpComponent } from './Components/auth/sign-up/sign-up.component';
 import { LoginComponent } from './Components/auth/login/login.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
+import { ImagesListComponent } from './Components/images-list/images-list.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
     FooterComponent,
     SignUpComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    ImagesListComponent
   ],
   imports: [
     BrowserModule,

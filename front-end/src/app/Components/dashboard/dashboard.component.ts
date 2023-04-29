@@ -9,7 +9,7 @@ export class DashboardComponent implements OnInit {
 
   @ViewChild("fileUpload", {static: false}) fileUpload!: ElementRef;
 
-  DJANGO_SERVER: string = "http://127.0.0.1:8000";
+  DJANGO_SERVER: string = "https://azuroo-api.azurewebsites.net";
   imageSrc: string = "";
   fileName: any;
   fileType: any;
@@ -56,9 +56,10 @@ export class DashboardComponent implements OnInit {
     const url = this.DJANGO_SERVER + "/api/create";
     this.loading = true;
 
-      this.httpClient.post(url, {filename: this.fileName.split(".")[0], extension: this.fileType,img: this.base64Image}).subscribe( 
+      this.httpClient.post(url, {filename: this.fileName.split(".")[0] + Date.now(), extension: this.fileType,img: this.base64Image}).subscribe( 
         res => {
           console.log(res);
+          //console.log(__filename);
           this.loaded = true;
           this.loading = false;
           this.fileUpload.nativeElement.value = "";

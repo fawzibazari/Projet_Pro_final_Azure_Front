@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="panel panel-primary">
+    <table class="table table-striped align-middle mb-0 bg-white">
+      <thead class="bg-light w-100">
+        <tr class="d-flex">
+          <th class="col-1 text-center"><i class="bi bi-images"></i></th>
+          <th class="col-4 text-center">Description</th>
+          <th class="col-1 text-center">Fiabilité</th>
+          <th class="col-3 text-center">Tags</th>
+          <th class="col-3 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <div class="text-center justify-content-center" *ngIf="isLoading">
+          <div>
+            Chargement en cours 
+            <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+              <span class="sr-only"></span>
+            </div>
+            <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+              <span class="sr-only"></span>
+            </div>
+            <div class="spinner-grow spinner-grow-sm text-success" role="status">
+              <span class="sr-only"></span>
+            </div>
+          </div>
+        </div>
+        <tr class="infiniteScrollContainer d-flex" *ngFor="let image of imagesList">
+          <td class="col-1 text-center">
+            <img src="{{ image.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
+          </td>
+          <td class="col-4 text-center">
+            <p>{{ image.description.captions[0].text | titlecase}}</p>
+            <!-- <p class="text-muted mb-0">IT department</p> -->
+          </td>
+          <td class="col-1 text-center">
+            <span>{{ image.description.captions[0].confidence | percent }}</span>
+          </td>
+          <td class="col-3 text-center">
+            <p class="badge bg-info me-1 my-auto" *ngFor="let tag of image.tags.slice(0, 3)">{{ tag.name }}</p>
+          </td>
+          <td class="col-3 text-center">
+            <button type="button" class="btn btn-outline-secondary me-1">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteImage(image._id.$oid)">
+              <i class="bi bi-trash"></i>
+            </button>
+            <a type="butt" class="btn btn-outline-warning me-1" href="{{ image.url }}">
+              <i class="bi bi-cloud-download"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
