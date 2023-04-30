@@ -19,11 +19,14 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
+    "@types/offscreencanvas": "^2019.7.0",
+    "ng-rive": "^0.2.5",
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.10.2",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.4",
     "ngx-infinite-scroll": "^0.4.0",
+
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
@@ -33,6 +36,7 @@
     "@angular/cli": "~14.0.1",
     "@angular/compiler-cli": "^14.0.0",
     "@types/jasmine": "~4.0.0",
+    "@types/offscreencanvas": "^2019.7.0",
     "jasmine-core": "~4.1.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",

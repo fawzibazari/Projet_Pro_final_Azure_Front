@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { RiveModule } from 'ng-rive';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +33,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule
+
+    RiveModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

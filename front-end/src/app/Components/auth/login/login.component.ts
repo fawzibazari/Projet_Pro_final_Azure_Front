@@ -4,24 +4,20 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../../Services/auth.service';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   loginForm!: FormGroup;
+  nameState!: Boolean | null
 
-
-  constructor(
-    public authService: AuthService,
-    private router: Router
-  ) { }
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.createFormGroup();
+    this.nameState = null
     console.log(this.loginForm);
   }
 
@@ -35,23 +31,28 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     console.log(this.loginForm.value);
-    this.authService.login(
-      this.loginForm.value.firstname,
-      this.loginForm.value.mail,
-      this.loginForm.value.password).subscribe(
-        response => {
-          if (response.success) {
-            // connexion réussie, stocker le jeton d'authentification
-            localStorage.setItem('token', response.token);
-            console.log("login success");
-            // rediriger vers la page de dashboard
-            this.router.navigate(['/dashboard']);
-          } else {
-            // afficher un message d'erreur
-            alert(response.message);
-          }
+    this.authService
+      .login(
+        this.loginForm.value.firstname,
+        this.loginForm.value.mail,
+        this.loginForm.value.password
+      )
+      .subscribe((response) => {
+        if (response.success) {
+          // connexion réussie, stocker le jeton d'authentification
+          localStorage.setItem('token', response.token);
+          console.log('login success');
+          // rediriger vers la page de dashboard
+          this.router.navigate(['/dashboard']);
+        } else {
+          // afficher un message d'erreur
+          alert(response.message);
         }
-      );
+      });
   }
 
+  onFocusPassword(): void {   
+    this.nameState = !this.nameState;
+
+  }
 }
