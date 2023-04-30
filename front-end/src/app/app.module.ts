@@ -13,6 +13,7 @@ import { SignUpComponent } from './Components/auth/sign-up/sign-up.component';
 import { LoginComponent } from './Components/auth/login/login.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { ImagesListComponent } from './Components/images-list/images-list.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ImagesListComponent } from './Components/images-list/images-list.compon
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

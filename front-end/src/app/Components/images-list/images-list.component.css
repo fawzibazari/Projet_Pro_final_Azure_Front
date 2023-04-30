@@ -1,0 +1,24 @@
+.btn-search {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+  color: white;
+}
+
+/* btn login hover color */
+.btn-search:hover {
+  background-color: #7f57c9;
+  border-color: #8157cf;
+}
+
+#table-wrapper {
+  position:relative;
+}
+#table-scroll {
+  height:150px;
+  overflow:auto;  
+  margin-top:20px;
+}
+#table-wrapper table {
+  width:100%;
+
+}
