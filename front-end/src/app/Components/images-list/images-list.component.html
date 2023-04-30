@@ -30,9 +30,9 @@
 </div>
 
 <div class="container">
-  <div class="panel" id="table-wrapper">
-    <div class="table-wrapper-scroll-y my-custom-scrollbar" id="tabble-scroll">
-      <table class="table table-striped mb-0">
+  <div class="panel">
+    <div class="table-container">
+      <table class="table table-striped">
         <thead class="bg-light w-100">
           <tr class="d-flex">
             <th class="col-1 text-center"><i class="bi bi-list"></i></th>
@@ -42,7 +42,7 @@
             <th class="col-3 text-center">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody (scroll)="onScroll($event)">
           <div class="text-center justify-content-center" *ngIf="isLoading">
             <div>
               Chargement en cours

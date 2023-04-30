@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ImagesListService } from '../../Services/images-list.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -23,7 +23,6 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   constructor(
     public imagesListService: ImagesListService,
     private router: Router,
-    private modalService: NgbModal
   ) { }
 
   ngOnDestroy(): void {
@@ -40,7 +39,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
 
   onDeleteImage(imageId: string): void {
     this.imagesListService.deleteImage(imageId).subscribe(() => {
-      this.loadImages();
+      this.getImages();
     });
   }
 
@@ -53,18 +52,30 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     });
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onScroll(): void {
-    const scrollPosition = window.pageYOffset; // position de défilement actuelle
-    const windowSize = window.innerHeight; // hauteur de la fenêtre du navigateur
-    const bodyHeight = document.body.offsetHeight; // hauteur totale du corps de la page
+  onScroll(event: any) {
+    //const scrollPosition = window.pageYOffset; // position de défilement actuelle
+    //const windowSize = window.innerHeight; // hauteur de la fenêtre du navigateur
+    //const bodyHeight = document.body.offsetHeight; // hauteur totale du corps de la page
 
     // si la position de défilement + la hauteur de la fenêtre du navigateur est supérieure à la hauteur totale du corps de la page
     // cela signifie que l'utilisateur a atteint le bas de la page et il faut charger plus d'images
-    if (scrollPosition + windowSize >= bodyHeight && !this.isLoading && this.imagesList.length <= this.nbImages) {
-      this.startIndex += this.limit; // on met à jour l'index de départ
-      this.loadImages(); // on charge les images suivantes
+    // if (scrollPosition + windowSize >= bodyHeight && !this.isLoading && this.imagesList.length <= this.nbImages) {
+    //   this.startIndex += this.limit; // on met à jour l'index de départ
+    //   this.loadImages(); // on charge les images suivantes
+    // }
+
+    const tableViewHeight = event.target.offsetHeight; // Hauteur de la table visible
+    const tableScrollHeight = event.target.scrollHeight; // Hauteur totale de la table
+    const scrollLocation = event.target.scrollTop; // Position de l'utilisateur dans la table
+
+    // Si l'utilisateur est proche de la fin de la table et qu'il n'y a pas de chargement en cours
+    if (tableViewHeight + scrollLocation >= tableScrollHeight && !this.isLoading) {
+      // Augmentez le numéro de page pour charger la page suivante
+      this.startIndex++;
+      // Chargez les images suivantes
+      this.loadImages();
     }
+
   }
 
 
