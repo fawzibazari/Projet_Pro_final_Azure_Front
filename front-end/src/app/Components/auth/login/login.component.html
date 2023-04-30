@@ -6,6 +6,9 @@
                   <div class="col-md-6">
                       <div class="form-wrap bg-white">
                           <h4 class="btm-sep pb-3 mb-5">Connexion</h4>
+                          <canvas riv="login-teddy" width="500" height="500">
+                            <riv-animation name="idle" play></riv-animation>
+                          </canvas>
                           <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
                             <div class="form-group">
                               <label for="mail">Adresse e-mail</label>
