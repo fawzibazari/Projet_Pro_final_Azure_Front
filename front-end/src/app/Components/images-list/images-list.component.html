@@ -1,58 +1,259 @@
+<div class="jumbotron jumbotron-fluid mb-3">
+  <div class="container">
+    <h1 class="display-5">Découverez toutes les photos</h1>
+    <p class="lead">Trouvez l'image parfaite pour votre campagne marketing.</p>
+    <div class="btn-toolbar justify-content-sm-between" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group my-auto me-2" role="group" aria-label="First group">
+        <input class="form-check-input" type="checkbox" name="selectAll" value="selectAll">
+      </div>
+      <div class="btn-group me-2" role="groupe" aria-label="Second group">
+        <label class="form-check-label my-auto" for="selectAll">Sélectionnés</label>
+      </div>
+      <div class="btn-group" role="group" aria-label="Third group">
+        <button type="button" class="btn btn-outline-danger me-1" [disabled]="true"><i class="bi bi-trash"></i></button>
+      </div>
+      <div class="btn-group me-2 w-50" role="group" aria-label="Fourth group">
+        <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher une image">
+        <button class="btn btn-search" type="button"><i class="bi bi-search"></i></button>
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="list" autocomplete="off" checked>
+        <label class="btn btn-outline-secondary" for="list"><i class="bi bi-list-ul"></i></label>
+        <input type="radio" class="btn-check" name="btnradio" id="grid" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="grid"><i class="bi bi-grid"></i></label>
+      </div>
+      <div class="btn-group me-2" role="group" aria-label="Fifth group">
+        <p class="text my-auto">{{ nbImages }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container">
-  <div class="panel panel-primary">
-    <table class="table table-striped align-middle mb-0 bg-white">
-      <thead class="bg-light w-100">
-        <tr class="d-flex">
-          <th class="col-1 text-center"><i class="bi bi-images"></i></th>
-          <th class="col-4 text-center">Description</th>
-          <th class="col-1 text-center">Fiabilité</th>
-          <th class="col-3 text-center">Tags</th>
-          <th class="col-3 text-center">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <div class="text-center justify-content-center" *ngIf="isLoading">
-          <div>
-            Chargement en cours 
-            <div class="spinner-grow spinner-grow-sm text-primary" role="status">
-              <span class="sr-only"></span>
-            </div>
-            <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
-              <span class="sr-only"></span>
-            </div>
-            <div class="spinner-grow spinner-grow-sm text-success" role="status">
-              <span class="sr-only"></span>
+  <div class="panel">
+    <div class="table-container">
+      <table class="table table-striped">
+        <thead class="bg-light w-100">
+          <tr class="d-flex">
+            <th class="col-1 text-center"><i class="bi bi-list"></i></th>
+            <th class="col-4 text-center">Description</th>
+            <th class="col-1 text-center">Fiabilité</th>
+            <th class="col-3 text-center">Tags</th>
+            <th class="col-3 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody (scroll)="onScroll($event)">
+          <div class="text-center justify-content-center" *ngIf="isLoading">
+            <div>
+              Chargement en cours
+              <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                <span class="sr-only"></span>
+              </div>
+              <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+                <span class="sr-only"></span>
+              </div>
+              <div class="spinner-grow spinner-grow-sm text-success" role="status">
+                <span class="sr-only"></span>
+              </div>
             </div>
           </div>
-        </div>
-        <tr class="infiniteScrollContainer d-flex" *ngFor="let image of imagesList">
-          <td class="col-1 text-center">
-            <img src="{{ image.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
-          </td>
-          <td class="col-4 text-center">
-            <p>{{ image.description.captions[0].text | titlecase}}</p>
-            <!-- <p class="text-muted mb-0">IT department</p> -->
-          </td>
-          <td class="col-1 text-center">
-            <span>{{ image.description.captions[0].confidence | percent }}</span>
-          </td>
-          <td class="col-3 text-center">
-            <p class="badge bg-info me-1 my-auto" *ngFor="let tag of image.tags.slice(0, 3)">{{ tag.name }}</p>
-          </td>
-          <td class="col-3 text-center">
-            <button type="button" class="btn btn-outline-secondary me-1">
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteImage(image._id.$oid)">
-              <i class="bi bi-trash"></i>
-            </button>
-            <a type="butt" class="btn btn-outline-warning me-1" href="{{ image.url }}">
-              <i class="bi bi-cloud-download"></i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <tr class="d-flex infiniteScrollContainer" *ngFor="let image of imagesList" (mouseover)="image.hover = true"
+            (mouseleave)="image.hover = false">
+            <div class="my-auto" *ngIf="image.hover">
+              <input type="checkbox" name="selectedImages" [value]="image._id.$oid">
+            </div>
+            <td class="col-1 text-start">
+              <img src="{{ image.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
+            </td>
+            <td class="col-4 text-center">
+              <p>{{ image.description.captions[0].text | titlecase}}</p>
+            </td>
+            <td class="col-1 text-center">
+              <span>{{ image.description.captions[0].confidence | percent }}</span>
+            </td>
+            <td class="col-3 text-center">
+              <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of image.tags.slice(0, 3)">
+                {{ tag.name }}</p>
+            </td>
+            <td class="col-3 text-center">
+              <button type="button" class="btn btn-outline-secondary me-1">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteImage(image._id.$oid)">
+                <i class="bi bi-trash"></i>
+              </button>
+              <a type="button" class="btn btn-outline-warning me-1" href="{{ image.url }}">
+                <i class="bi bi-cloud-download"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-
 </div>
+
+<!-- <div class="container">
+  <div class="panel" id="table-wrapper">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar" id="table-scroll">
+
+      <table class="table table-bordered table-striped mb-0">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    
+    </div>
+  </div>
+</div> -->

@@ -1,0 +1,24 @@
+.btn-search {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+  color: white;
+}
+
+/* btn login hover color */
+.btn-search:hover {
+  background-color: #7f57c9;
+  border-color: #8157cf;
+}
+
+tbody {
+  display: block;
+  height: 30rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
