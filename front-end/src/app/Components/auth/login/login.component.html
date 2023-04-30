@@ -8,7 +8,13 @@
               <h4 class="btm-sep pb-3 mb-5">Connexion</h4>
               <canvas riv="login-teddy" width="500" height="500">
                 <riv-animation
-                  [name]="nameState ? 'Hands_up' : 'hands_down'"
+                  [name]="
+                    nameState == null
+                      ? 'idle'
+                      : nameState
+                      ? 'Hands_up'
+                      : 'hands_down'
+                  "
                   play
                 ></riv-animation>
               </canvas>
@@ -32,8 +38,8 @@
                     class="form-control"
                     id="password"
                     formControlName="password"
-                    (focus)="onFocus()"
-                    (focusout)="onFocus()"
+                    (focus)="onFocusPassword()"
+                    (focusout)="onFocusPassword()"
                     placeholder="Mot de passe"
                   />
                 </div>

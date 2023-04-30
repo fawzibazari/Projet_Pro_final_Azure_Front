@@ -11,12 +11,13 @@ import { AuthService } from '../../../Services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  nameState!: Boolean
+  nameState!: Boolean | null
 
   constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.createFormGroup();
+    this.nameState = null
     console.log(this.loginForm);
   }
 
@@ -50,8 +51,7 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  onFocus(): void {   
-     
+  onFocusPassword(): void {   
     this.nameState = !this.nameState;
 
   }
