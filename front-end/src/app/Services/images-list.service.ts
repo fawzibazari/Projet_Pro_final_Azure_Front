@@ -26,4 +26,8 @@ export class ImagesListService {
     return this.http.get(`${this.DJANGO_SERVER_URL}/list/${number}/${limit}`);
   }
 
+  updateImageName(id: string, fileName: string, oldFile: string, extension: string, img: string): Observable<any> {
+    return this.http.put(`${this.DJANGO_SERVER_URL}/actions/${id}`, {filename: fileName, oldFile: oldFile, extension: extension, img: img});
+  }
+
 }

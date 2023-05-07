@@ -10,6 +10,19 @@
   border-color: #8157cf;
 }
 
+/* btn-outline signup color purple */
+.btn-signup {
+  color: #6f42c1;
+  border-color: #6f42c1;
+}
+
+/* btn-outline signup hover color */
+.btn-signup:hover {
+  background-color: #8157cf;
+  border-color: #8157cf;
+  color: white;
+}
+
 tbody {
   display: block;
   height: 30rem;
@@ -21,4 +34,64 @@ tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;
+}
+
+img:hover {
+  cursor: pointer;
+}
+
+/* cards display */
+.section-gray {
+  background: #E5E5E5;
+  padding: 60px 0 30px 0;
+  display: block;
+  height: 33rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.card .card-image {
+  height: 60%;
+  position: relative;
+  overflow: hidden;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: -30px;
+  border-radius: 6px;
+  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.card .card-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.card .card-image .card-caption {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  color: #fff;
+  font-size: 1.3em;
+  text-shadow: 0 2px 5px rgba(33, 33, 33, 0.5);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.img-raised {
+  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* ============ Card Table ============ */
+
+.table {
+  margin-bottom: 0px;
+}
+
+.card .table {
+  padding: 15px 30px;
 }

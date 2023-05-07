@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   alertMessage: string = "";
 
 
-  constructor( 
+  constructor(
     private httpClient: HttpClient
   ) { }
 
@@ -49,14 +49,14 @@ export class DashboardComponent implements OnInit {
       this.base64Image =this.imageSrc.split(",")[1];
       this.fileType = this.imageSrc.split("/")[1].split(";")[0];
       //console.log("file type --------->"+ fileType);
-      //console.log(base64Image);
+      console.log(this.base64Image);
   }
 
   handleSubmit(e: any){
     const url = this.DJANGO_SERVER + "/api/create";
     this.loading = true;
 
-      this.httpClient.post(url, {filename: this.fileName.split(".")[0] + Date.now(), extension: this.fileType,img: this.base64Image}).subscribe( 
+      this.httpClient.post(url, {filename: this.fileName.split(".")[0] + Date.now(), extension: this.fileType,img: this.base64Image}).subscribe(
         res => {
           console.log(res);
           //console.log(__filename);

@@ -1,15 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ImagesListService } from '../../Services/images-list.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-images-list',
   templateUrl: './images-list.component.html',
   styleUrls: ['./images-list.component.css']
 })
+
 export class ImagesListComponent implements OnInit, OnDestroy {
+  @ViewChild('EditNameModal') EditNameModal: any;
+  @ViewChild('checkbox') checkbox!: ElementRef<HTMLInputElement>;
 
   imagesList: any[] = [];
   isLoading: boolean = false;
@@ -17,12 +20,22 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   //totalImages: number = 0;
   startIndex: number = 0;
   limit: number = 10;
+  isList: boolean = false;
+  isGrid: boolean = true;
+  isChecked: boolean = true;
+  selectedImages: {[key: string]: boolean} = {};
+
+  EditImageNameForm = new FormGroup
+  ({
+    imageName: new FormControl('', Validators.required),
+  })
 
   private subscription: Subscription = new Subscription(); // pour gérer le cycle de vie du composant
 
   constructor(
     public imagesListService: ImagesListService,
     private router: Router,
+    private modalService: NgbModal
   ) { }
 
   ngOnDestroy(): void {
@@ -44,8 +57,8 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   }
 
   getImages(): void {
-    this.isLoading = true;
-    this.imagesListService.getImagesList().subscribe(data => {
+      this.isLoading = true;
+      this.imagesListService.getImagesList().subscribe(data => {
       this.imagesList = data.images;
       this.nbImages = data.images.length;
       this.isLoading = false;
@@ -53,17 +66,6 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   }
 
   onScroll(event: any) {
-    //const scrollPosition = window.pageYOffset; // position de défilement actuelle
-    //const windowSize = window.innerHeight; // hauteur de la fenêtre du navigateur
-    //const bodyHeight = document.body.offsetHeight; // hauteur totale du corps de la page
-
-    // si la position de défilement + la hauteur de la fenêtre du navigateur est supérieure à la hauteur totale du corps de la page
-    // cela signifie que l'utilisateur a atteint le bas de la page et il faut charger plus d'images
-    // if (scrollPosition + windowSize >= bodyHeight && !this.isLoading && this.imagesList.length <= this.nbImages) {
-    //   this.startIndex += this.limit; // on met à jour l'index de départ
-    //   this.loadImages(); // on charge les images suivantes
-    // }
-
     const tableViewHeight = event.target.offsetHeight; // Hauteur de la table visible
     const tableScrollHeight = event.target.scrollHeight; // Hauteur totale de la table
     const scrollLocation = event.target.scrollTop; // Position de l'utilisateur dans la table
@@ -104,6 +106,11 @@ export class ImagesListComponent implements OnInit, OnDestroy {
       console.log(error);
       this.isLoading = false;
     }))
+  }
+
+  // Edit image name
+  openEditImageModal() {
+    this.modalService.open(this.EditNameModal, { centered: true });
   }
 
 
