@@ -1,6 +1,7 @@
-<header class="d-flex flex-wrap align-item-center justify-content-center justify-content-md-between py-3 mb-4 border-buttom header-box">
+<header
+  class="d-flex flex-wrap align-item-center justify-content-center justify-content-md-between py-3 mb-4 border-buttom header-box">
   <div class="col-md-3 mb-2">
-    <a class="navbar-brand" [routerLink]="['']" >
+    <a class="navbar-brand" [routerLink]="['']">
       <img src="/assets/logo/PassionFroid.png" width="50" height="50" class="d-inline-block align-center" alt="">
       PassionFroid
     </a>
@@ -19,8 +20,19 @@
       <a class="nav-link px-2 link-secondary" href="#">About</a>
     </li>
   </ul>
-  <div class="col-md-3 text-end my-auto me-2">
+  <div class="col-md-3 text-end my-auto me-2" *ngIf="!authService.isAuthenticated()">
     <button class="btn btn-login me-2" [routerLink]="['/login']">Connexion</button>
     <button class="btn btn-signup" [routerLink]="['/signup']">Inscription</button>
+  </div>
+  <div class="col text-end me-1" *ngIf="authService.isAuthenticated()">
+    <div ngbDropdown class="d-inline-block">
+      <button type="button" class="btn btn-signup" aria-haspopup="true"
+        id="logoutDropDown" aria-expanded="false" ngbDropdownToggle>
+        Mon compte
+      </button>
+      <div ngbDropdownMenu="logoutDropDown">
+        <button ngbDropdownItem class="text-secondary" (click)="logout()">Déconnexion</button>
+      </div>
+    </div>
   </div>
 </header>

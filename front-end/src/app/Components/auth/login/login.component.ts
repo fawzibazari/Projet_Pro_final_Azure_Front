@@ -11,7 +11,7 @@ import { AuthService } from '../../../Services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  nameState!: Boolean | null
+  nameState!: Boolean | null;
 
   constructor(public authService: AuthService, private router: Router) {}
 
@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
 
   createFormGroup(): FormGroup {
     return new FormGroup({
-      firstname: new FormControl('', [Validators.required]),
       mail: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
@@ -33,7 +32,6 @@ export class LoginComponent implements OnInit {
     console.log(this.loginForm.value);
     this.authService
       .login(
-        this.loginForm.value.firstname,
         this.loginForm.value.mail,
         this.loginForm.value.password
       )
@@ -51,8 +49,7 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  onFocusPassword(): void {   
+  onFocusPassword(): void {
     this.nameState = !this.nameState;
-
   }
 }
