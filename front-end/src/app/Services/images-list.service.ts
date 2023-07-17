@@ -13,6 +13,11 @@ export class ImagesListService {
     private http: HttpClient,
   ) { }
 
+  // get image info
+  getImageInfo(imageId: string): Observable<any> {
+    return this.http.get(`${this.DJANGO_SERVER_URL}/actions/${imageId}`);
+  }
+
   getImagesList(): Observable<any> {
     return this.http.get(`${this.DJANGO_SERVER_URL}/list`);
   }
@@ -27,7 +32,13 @@ export class ImagesListService {
   }
 
   updateImageName(id: string, fileName: string, oldFile: string, extension: string, img: string): Observable<any> {
-    return this.http.put(`${this.DJANGO_SERVER_URL}/actions/${id}`, {filename: fileName, oldFile: oldFile, extension: extension, img: img});
+    return this.http.put(`${this.DJANGO_SERVER_URL}/actions/${id}`, { filename: fileName, oldFile: oldFile, extension: extension, img: img });
+  }
+
+  // search similar images
+  searchImages(phrase: string): Observable<any> {
+    const searchData = { phrase: phrase };
+    return this.http.post(`${this.DJANGO_SERVER_URL}/search`, searchData);
   }
 
 }

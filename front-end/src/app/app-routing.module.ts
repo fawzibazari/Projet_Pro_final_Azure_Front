@@ -8,6 +8,7 @@ import { LoginComponent } from './Components/auth/login/login.component';
 import { SignUpComponent } from './Components/auth/sign-up/sign-up.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { ImagesListComponent } from './Components/images-list/images-list.component';
+import { ImageInfoComponent } from './Components/image-info/image-info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'signup', component: SignUpComponent},
   { path: 'dashboard', component: DashboardComponent},
   { path: 'images-list', component: ImagesListComponent},
+  { path: 'image-info/:imageId', component: ImageInfoComponent},
 ];
 
 @NgModule({

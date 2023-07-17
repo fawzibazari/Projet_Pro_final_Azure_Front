@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, NgModule } from '@angular/core';
 import { ImagesListService } from '../../Services/images-list.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-images-list',
   templateUrl: './images-list.component.html',
@@ -17,13 +17,14 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   imagesList: any[] = [];
   isLoading: boolean = false;
   nbImages: number = 0;
-  //totalImages: number = 0;
   startIndex: number = 0;
   limit: number = 10;
   isList: boolean = false;
   isGrid: boolean = true;
   isChecked: boolean = true;
   selectedImages: {[key: string]: boolean} = {};
+
+  searchPhrase: string = '';
 
   EditImageNameForm = new FormGroup
   ({
@@ -45,7 +46,6 @@ export class ImagesListComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    //this.getImages();
     this.loadImages();
   }
 
@@ -98,7 +98,6 @@ export class ImagesListComponent implements OnInit, OnDestroy {
 
       // update nb images
       this.nbImages = this.imagesList.length;
-      console.log("total  nb images ", this.nbImages);
       // fin de chargement
       this.isLoading = false;
 
@@ -113,5 +112,19 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     this.modalService.open(this.EditNameModal, { centered: true });
   }
 
-
+  onSearch(): void {
+    if (this.searchPhrase.trim() === '') {
+      this.getImages();
+      console.log('empty search');
+    } else {
+      this.isLoading = true;
+      this.imagesListService.searchImages(this.searchPhrase).subscribe(data => {
+        console.log("data",data);
+        this.imagesList = data.similarity;
+        this.nbImages = data.similarity.length;
+        this.isLoading = false;
+      })
+      console.log('search', this.searchPhrase);
+    }
+  }
 }
