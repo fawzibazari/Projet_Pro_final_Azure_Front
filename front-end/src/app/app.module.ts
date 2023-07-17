@@ -16,6 +16,7 @@ import { LoginComponent } from './Components/auth/login/login.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { ImagesListComponent } from './Components/images-list/images-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotFoundComponent } from './Components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SignUpComponent,
     LoginComponent,
     DashboardComponent,
-    ImagesListComponent
+    ImagesListComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
