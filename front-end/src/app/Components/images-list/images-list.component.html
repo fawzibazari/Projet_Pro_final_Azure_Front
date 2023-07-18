@@ -15,6 +15,12 @@
       <div class="btn-group me-2 w-50" role="group" aria-label="Fourth group">
         <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher une image" [(ngModel)]="searchPhrase" (input)="onSearch()">
         <button class="btn btn-search" type="button" (click)="onSearch()"><i class="bi bi-search"></i></button>
+        <button 
+          class="btn btn-mic" 
+          type="button"
+          (click)="toggleVoiceRecognition()">
+          <i [ngClass]="{'bi bi-mic-mute': isListening == false, 'bi bi-mic': isListening == true}"></i>
+        </button>       
       </div>
       <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="list" autocomplete="off"
