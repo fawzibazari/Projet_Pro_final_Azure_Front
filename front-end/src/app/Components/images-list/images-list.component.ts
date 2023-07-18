@@ -1,54 +1,65 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { ImagesListService } from '../../Services/images-list.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { VoiceRecognitionService } from '../../Services/voice-recognition.service';
+
 @Component({
   selector: 'app-images-list',
   templateUrl: './images-list.component.html',
-  styleUrls: ['./images-list.component.css']
+  styleUrls: ['./images-list.component.css'],
+  providers: [VoiceRecognitionService],
 })
-
 export class ImagesListComponent implements OnInit, OnDestroy {
   @ViewChild('EditNameModal') EditNameModal: any;
   @ViewChild('checkbox') checkbox!: ElementRef<HTMLInputElement>;
+  @ViewChild('speechButton') speechButton!: ElementRef<HTMLButtonElement>;
 
   imagesList: any[] = [];
   isLoading: boolean = false;
   nbImages: number = 0;
-  //totalImages: number = 0;
   startIndex: number = 0;
   limit: number = 10;
   isList: boolean = false;
   isGrid: boolean = true;
   isChecked: boolean = true;
-  selectedImages: {[key: string]: boolean} = {};
+  isListening: boolean = false;
+  selectedImages: { [key: string]: boolean } = {};
 
-  EditImageNameForm = new FormGroup
-  ({
+  searchPhrase: string = '';
+
+  EditImageNameForm = new FormGroup({
     imageName: new FormControl('', Validators.required),
-  })
+  });
 
   private subscription: Subscription = new Subscription(); // pour gérer le cycle de vie du composant
 
   constructor(
     public imagesListService: ImagesListService,
     private router: Router,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    public voiceRecognitionService: VoiceRecognitionService
+  ) {
+    this.voiceRecognitionService.init();
+  }
 
   ngOnDestroy(): void {
     // désabonnement à la fin du cycle de vie du composant
     this.subscription.unsubscribe();
   }
 
-
   ngOnInit(): void {
-    //this.getImages();
     this.loadImages();
   }
-
 
   onDeleteImage(imageId: string): void {
     this.imagesListService.deleteImage(imageId).subscribe(() => {
@@ -57,8 +68,8 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   }
 
   getImages(): void {
-      this.isLoading = true;
-      this.imagesListService.getImagesList().subscribe(data => {
+    this.isLoading = true;
+    this.imagesListService.getImagesList().subscribe((data) => {
       this.imagesList = data.images;
       this.nbImages = data.images.length;
       this.isLoading = false;
@@ -71,41 +82,48 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     const scrollLocation = event.target.scrollTop; // Position de l'utilisateur dans la table
 
     // Si l'utilisateur est proche de la fin de la table et qu'il n'y a pas de chargement en cours
-    if (tableViewHeight + scrollLocation >= tableScrollHeight && !this.isLoading) {
+    if (
+      tableViewHeight + scrollLocation >= tableScrollHeight &&
+      !this.isLoading
+    ) {
       // Augmentez le numéro de page pour charger la page suivante
       this.startIndex++;
       // Chargez les images suivantes
       this.loadImages();
     }
-
   }
-
 
   loadImages(): void {
     this.startIndex = this.imagesList.length;
     this.isLoading = true;
     //  appel pour récupérer les images de la page courante
-    const images$ = this.imagesListService.getImagesListWithPagination(this.startIndex, this.limit);
+    const images$ = this.imagesListService.getImagesListWithPagination(
+      this.startIndex,
+      this.limit
+    );
 
-    this.subscription.add(images$.subscribe(data => {
-      const images = data.images;
-      if (images.length === 0) {
-        this.isLoading = false;
-        return;
-      }
-      // ajout des images à la liste éxistante
-      this.imagesList = [...this.imagesList, ...images];
+    this.subscription.add(
+      images$.subscribe(
+        (data) => {
+          const images = data.images;
+          if (images.length === 0) {
+            this.isLoading = false;
+            return;
+          }
+          // ajout des images à la liste éxistante
+          this.imagesList = [...this.imagesList, ...images];
 
-      // update nb images
-      this.nbImages = this.imagesList.length;
-      console.log("total  nb images ", this.nbImages);
-      // fin de chargement
-      this.isLoading = false;
-
-    }, error => {
-      console.log(error);
-      this.isLoading = false;
-    }))
+          // update nb images
+          this.nbImages = this.imagesList.length;
+          // fin de chargement
+          this.isLoading = false;
+        },
+        (error) => {
+          console.log(error);
+          this.isLoading = false;
+        }
+      )
+    );
   }
 
   // Edit image name
@@ -113,5 +131,37 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     this.modalService.open(this.EditNameModal, { centered: true });
   }
 
+  // text search
+  onSearch(): void {
+    if (this.searchPhrase.trim() === '') {
+      this.getImages();
+      console.log('empty search');
+    } else {
+      this.isLoading = true;
+      this.imagesListService
+        .searchImages(this.searchPhrase)
+        .subscribe((data) => {
+          console.log('data', data);
+          this.imagesList = data.similarity;
+          this.nbImages = data.similarity.length;
+          this.isLoading = false;
+        });
+      console.log('search', this.searchPhrase);
+    }
+  }
 
+  // voice search
+  toggleVoiceRecognition(): void {
+    if (this.voiceRecognitionService.isStoppedSpeechRecog) {
+      this.voiceRecognitionService.start();
+      this.isListening = true;
+
+    } else {
+      this.voiceRecognitionService.stop();
+      this.searchPhrase = this.voiceRecognitionService.text;
+      this.onSearch();
+      this.voiceRecognitionService.text = '';
+      this.isListening = false;
+    }
+  }
 }

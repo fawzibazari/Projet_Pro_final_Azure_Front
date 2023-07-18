@@ -1,0 +1,40 @@
+<div class="container">
+  <p class="display-5">{{imageInfo.image.description.captions[0].text | titlecase}}</p>
+  <p>Date : {{imageInfo.image.datetime | date: 'dd-MM-yyyy'}}</p>
+  <div class="row">
+    <div class="col">
+      <img [src]="imageInfo.image.url" alt="">
+    </div>
+    <div class="col">
+      <p class="lead"><strong>Description :</strong> {{imageInfo.image.description.captions[0].text | titlecase}} - <span
+          class="text-info">{{ imageInfo.image.description.captions[0].confidence | percent }}</span></p>
+      <p class="lead">Tags :</p>
+      <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of imageInfo.image.tags.slice(0, 3)">
+        {{ tag.name }}
+      </p>
+      <div>
+        <button class="btn btn-primary" type="button" class="btn btn-outline-primary" (click)="collapse.toggle()"
+          [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+          voir plus
+        </button>
+      <div>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="triangle">
+          <div class="card card-body" style="width: 300px;">
+            <div class="card-text">
+              <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of imageInfo.image.tags">{{ tag.name }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <p>Catégories :</p>
+      <p class="badge rounded-pill bg-info me-1 my-auto text-dark"
+        *ngFor="let category of imageInfo.image.categories.slice(0, 3)">
+        {{ category.name }}
+      </p>
+    </div>
+  </div>
+  <div class="row">
+
+  </div>
+</div>

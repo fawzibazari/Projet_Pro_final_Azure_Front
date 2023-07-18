@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RiveModule } from 'ng-rive';
 
@@ -17,6 +17,7 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { ImagesListComponent } from './Components/images-list/images-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotFoundComponent } from './Components/not-found/not-found.component';
+import { ImageInfoComponent } from './Components/image-info/image-info.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NotFoundComponent } from './Components/not-found/not-found.component';
     LoginComponent,
     DashboardComponent,
     ImagesListComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ImageInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,8 +38,8 @@ import { NotFoundComponent } from './Components/not-found/not-found.component';
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
-    RiveModule
-
+    RiveModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
