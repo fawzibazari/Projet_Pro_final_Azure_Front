@@ -33,7 +33,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   isGrid: boolean = true;
   isChecked: boolean = true;
   isListening: boolean = false;
-  selectedImages: { [key: string]: boolean } = {};
+  selectedImages: string[] = [];
 
   searchPhrase: string = '';
 
@@ -65,6 +65,30 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     this.imagesListService.deleteImage(imageId).subscribe(() => {
       this.getImages();
     });
+  }
+
+  onDeleteSelectedImages(): void {
+    console.log('selected images', this.selectedImages)
+    this.selectedImages.forEach((imageId) => {
+      this.imagesListService.deleteImage(imageId).subscribe(() => {
+        console.log('deleted image id', imageId);
+        this.getImages();
+      });
+    });
+  
+  }
+
+  onCheckboxChange(event: any, value: string): void {
+    if (event.target.checked) {
+      // La case à cocher est cochée, ajoutez la valeur à votre liste selectedImages
+      this.selectedImages.push(value);
+    } else {
+      // La case à cocher est décochée, retirez la valeur de votre liste selectedImages
+      const index = this.selectedImages.indexOf(value);
+      if (index > -1) {
+        this.selectedImages.splice(index, 1);
+      }
+    }
   }
 
   getImages(): void {
@@ -152,16 +176,24 @@ export class ImagesListComponent implements OnInit, OnDestroy {
 
   // voice search
   toggleVoiceRecognition(): void {
-    if (this.voiceRecognitionService.isStoppedSpeechRecog) {
-      this.voiceRecognitionService.start();
-      this.isListening = true;
-
-    } else {
+    try {
+      if (this.isListening === false) {
+          this.voiceRecognitionService.start();
+          this.isListening = true;
+        } else {
+          this.voiceRecognitionService.stop();
+          this.searchPhrase = this.voiceRecognitionService.text;
+          this.onSearch();
+          this.voiceRecognitionService.text = '';
+          this.isListening = false;
+        }
+    } catch (error) {
       this.voiceRecognitionService.stop();
       this.searchPhrase = this.voiceRecognitionService.text;
       this.onSearch();
       this.voiceRecognitionService.text = '';
       this.isListening = false;
     }
+    
   }
 }

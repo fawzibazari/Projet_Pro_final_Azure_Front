@@ -14,13 +14,13 @@ import { ImageInfoComponent } from './Components/image-info/image-info.component
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent},
-  { path: 'login', component: LoginComponent},
-  { path: 'signup', component: SignUpComponent},
-  { path: 'dashboard', component: DashboardComponent},
-  { path: 'images-list', component: ImagesListComponent},
-  { path: 'not-found', component: NotFoundComponent},
-  { path: 'image-info/:imageId', component: ImageInfoComponent},
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignUpComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'images-list', component: ImagesListComponent },
+  { path: 'image-info/:imageId', component: ImageInfoComponent },
+  { path: '**', pathMatch: 'full', component: NotFoundComponent },
 ];
 
 @NgModule({
