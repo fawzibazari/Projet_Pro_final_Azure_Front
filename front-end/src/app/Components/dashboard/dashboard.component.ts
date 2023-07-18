@@ -3,25 +3,22 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild('fileUpload', { static: false }) fileUpload!: ElementRef;
 
-  @ViewChild("fileUpload", {static: false}) fileUpload!: ElementRef;
-
-  DJANGO_SERVER: string = "https://azuroo-api.azurewebsites.net";
-  imageSrc: string = "";
+  DJANGO_SERVER: string = 'https://azuroo-api.azurewebsites.net';
+  imageSrc: string = '';
   fileName: any;
   fileType: any;
   base64Image: any;
   loaded: boolean = false;
   loading: boolean = false;
-  alertMessage: string = "";
+  alertMessage: string = '';
+  inputValue: string = '';
 
-
-  constructor(
-    private httpClient: HttpClient
-  ) { }
+  constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {}
 
@@ -43,35 +40,39 @@ export class DashboardComponent implements OnInit {
   }
 
   _handleReaderLoaded(e: any) {
-      let reader = e.target;
-      this.imageSrc = reader.result;
+    let reader = e.target;
+    this.imageSrc = reader.result;
 
-      this.base64Image =this.imageSrc.split(",")[1];
-      this.fileType = this.imageSrc.split("/")[1].split(";")[0];
-      //console.log("file type --------->"+ fileType);
-      console.log(this.base64Image);
+    this.base64Image = this.imageSrc.split(',')[1];
+    this.fileType = this.imageSrc.split('/')[1].split(';')[0];
+    //console.log("file type --------->"+ fileType);
+    console.log(this.base64Image);
   }
 
-  handleSubmit(e: any){
-    const url = this.DJANGO_SERVER + "/api/create";
+  handleSubmit(e: any) {
+    const url = this.DJANGO_SERVER + '/api/create';
     this.loading = true;
 
-      this.httpClient.post(url, {filename: this.fileName.split(".")[0] + Date.now(), extension: this.fileType,img: this.base64Image}).subscribe(
-        res => {
+    this.httpClient
+      .post(url, {
+        filename: this.fileName.split('.')[0] + Date.now(),
+        extension: this.fileType,
+        img: this.base64Image,
+      })
+      .subscribe(
+        (res) => {
           console.log(res);
           //console.log(__filename);
           this.loaded = true;
           this.loading = false;
-          this.fileUpload.nativeElement.value = "";
+          this.fileUpload.nativeElement.value = '';
           this.alertMessage = "L'image a été chargée avec succès !";
         },
-        err => {
+        (err) => {
           console.log(err);
-          this.alertMessage = "Une erreur est survenue lors du chargement de l'image !";
+          this.alertMessage =
+            "Une erreur est survenue lors du chargement de l'image !";
         }
       );
   }
-
-
-
 }
