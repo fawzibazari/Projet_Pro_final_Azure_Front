@@ -1,14 +1,73 @@
 .header-box {
-  -webkit-box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1);
-          box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+    padding: 20px;
+    background-color: transparent;
+}
+
+.logo {
+  font-family: "Popin", sans-serif;
+  font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1rem;
+}
+
+.navigation {
+  padding: 0.5rem 1rem;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.navigation li{
+   list-style-type: none;
+   font-family: "Popin", sans-serif;
+}
+
+.nav__link {
+  text-decoration: none;
+  color: #fff;
+  position: relative
+}
+
+.nav__link:hover{
+  color: #CD86C9;
+}
+
+.nav__link.active{
+  color: #CD86C9;
+  font-weight: bold;
+}
+
+.nav__link.active::after{
+  content: "";
+  position: absolute;
+  top: 25px;
+  left: 8px;
+  width: 14px;
+  height: 4px;
+  background-color: #CD86C9;
+
+}
+
+
+.btn-login, .btn-signup{
+  font-family: "Popins", sans-serif;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: black;
+  transition: all 0.3s ease-in-out;
 }
 
 /* btn login color purple */
 .btn-login {
-  background-color: #6f42c1;
-  border-color: #6f42c1;
-  color: white;
+  background-color: #CD86C9;
+  border-color: #CD86C9;
 }
 
 /* btn login hover color */
@@ -19,8 +78,8 @@
 
 /* btn-outline signup color purple */
 .btn-signup {
-  color: #6f42c1;
-  border-color: #6f42c1;
+  color: #CD86C9;
+  border-color: #CD86C9;
 }
 
 /* btn-outline signup hover color */
