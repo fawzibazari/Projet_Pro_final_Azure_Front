@@ -10,7 +10,7 @@
         <label class="form-check-label my-auto" for="selectAll">Sélectionnés</label>
       </div>
       <div class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-outline-danger me-1" [disabled]="true"><i class="bi bi-trash"></i></button>
+        <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteSelectedImages()"><i class="bi bi-trash"></i></button>
       </div>
       <div class="btn-group me-2 w-50" role="group" aria-label="Fourth group">
         <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher une image" [(ngModel)]="searchPhrase" (input)="onSearch()">
@@ -68,12 +68,11 @@
         <tbody (scroll)="onScroll($event)">
           <tr class="d-flex infiniteScrollContainer" *ngFor="let image of imagesList">
             <div class="d-flex" (mouseover)="image.hover = true" (mouseleave)="image.hover = false">
-              <div class="my-auto mr-1" *ngIf="image.hover">
-                <input type="checkbox" name="selectedImages" [value]="image._id.$oid">
+              <div class="my-auto mr-1" *ngIf="image.hover || selectedImages.includes(image._id.$oid)">
+                <input type="checkbox" name="selectedImages" [value]="image._id.$oid" (change)="onCheckboxChange($event, image._id.$oid)">
               </div>
               <td class="col-1 text-start">
-                <img src="{{ image.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"
-                  (click)="checkbox.nativeElement.checked = true" />
+                <img src="{{ image.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
               </td>
             </div>
             <td class="col-4 text-center">

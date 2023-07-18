@@ -15,15 +15,16 @@ export class VoiceRecognitionService {
   constructor() { }
 
   init() {
+    this.recognition.continuous = true;
     this.recognition.interimResults = true;
     this.recognition.lang = 'en-US';
     
     this.recognition.addEventListener('result', (e: any) => {
-      const transcript = Array.from(e.results)
-        .map((result: any) => result[0])
-        .map((result: any) => result.transcript)
-        .join('');
-      this.tempWords = transcript;
+      const transcript = Array.from(e.results) // e.results is a list of all the words that have been recognized
+        .map((result: any) => result[0]) // result[0] is the first alternative of the most recent SpeechRecognitionResult
+        .map((result: any) => result.transcript) // result.transcript is the recognized word
+        .join(''); // join all the words into a single string
+      this.tempWords = transcript; // set tempWords to the string of all the words
       console.log("tempwords : ", transcript);
     });
   }
