@@ -29,6 +29,7 @@ tbody {
   overflow-y: auto;
   scrollbar-width: thin;
 }
+
 thead,
 tbody tr {
   display: table;
@@ -42,11 +43,17 @@ img:hover {
 
 /* cards display */
 .section-gray {
-  background: #E5E5E5;
+  background: rgba(255, 255, 255, 0.27);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 60px 0 30px 0;
   display: block;
-  height: 33rem;
+  height: 40rem;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: thin;
 }
 
