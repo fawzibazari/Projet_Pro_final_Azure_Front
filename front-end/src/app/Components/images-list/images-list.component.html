@@ -18,9 +18,13 @@
         <button 
           class="btn btn-mic" 
           type="button"
+          id="record"
           (click)="toggleVoiceRecognition()">
           <i [ngClass]="{'bi bi-mic-mute': isListening == false, 'bi bi-mic': isListening == true}"></i>
-        </button>       
+        </button>    
+
+        <div id="waveform" style="border: 1px solid #ddd; border-radius: 4px"></div>
+         
       </div>
       <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="list" autocomplete="off"
@@ -168,3 +172,41 @@
     </div>
   </div>
 </div>
+<script type="module">
+  import WaveSurfer from 'https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.esm.js'
+import RecordPlugin from 'https://unpkg.com/wavesurfer.js@7/dist/plugins/record.esm.js'
+
+// Create an instance of WaveSurfer
+const wavesurfer = WaveSurfer.create({
+container: '#waveform',
+waveColor: 'rgb(200, 0, 200)',
+progressColor: 'rgb(100, 0, 100)',
+})
+
+// Initialize the Record plugin
+const record = wavesurfer.registerPlugin(RecordPlugin.create())
+
+// Add some controls
+const recButton = document.querySelector('#record')
+
+// Record
+recButton.onclick = () => {
+if (wavesurfer.isPlaying()) {
+  wavesurfer.pause()
+}
+
+if (record.isRecording()) {
+  record.stopRecording()
+  recButton.textContent = 'Record'
+  return
+}
+
+recButton.disabled = true
+
+record.startRecording().then(() => {
+  recButton.textContent = 'Stop'
+  recButton.disabled = false
+})
+}
+
+</script>
