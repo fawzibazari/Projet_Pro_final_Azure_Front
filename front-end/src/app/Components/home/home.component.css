@@ -1,0 +1,49 @@
+.home__left {
+    position: relative;
+    padding: 10px 20px;
+
+}
+
+.home__left::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.13);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(11.1px);
+    -webkit-backdrop-filter: blur(11.1px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    width: 100%;
+    height: 400px;
+}
+
+/* .home__title{
+    z-index: 5 !important;
+} */
+
+.home__heading {
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
+    font-size: 5rem;
+    color: rgba(71, 37, 239, 0.78);
+    line-height: 5.5rem;
+    position: relative;
+}
+
+.home__paragraph {
+    position: relative;
+    font-family: "Lato", sans-serif;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    line-height: 2.5rem;
+}
+
+.robot {
+    max-width: 600px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
