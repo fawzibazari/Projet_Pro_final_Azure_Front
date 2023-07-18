@@ -16,6 +16,7 @@ import { LoginComponent } from './Components/auth/login/login.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { ImagesListComponent } from './Components/images-list/images-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotFoundComponent } from './Components/not-found/not-found.component';
 import { ImageInfoComponent } from './Components/image-info/image-info.component';
 
 @NgModule({
@@ -28,6 +29,7 @@ import { ImageInfoComponent } from './Components/image-info/image-info.component
     LoginComponent,
     DashboardComponent,
     ImagesListComponent,
+    NotFoundComponent,
     ImageInfoComponent,
   ],
   imports: [
