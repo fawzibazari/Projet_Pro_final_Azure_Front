@@ -4,4 +4,4 @@
 
 ### Roadmap :
 
-- [ ] compatibilité sur tous les navigateurs (pas que sur chrome)
+- [ ] compatibilité sur tous les navigateurs (pas que sur chrome 😅)
