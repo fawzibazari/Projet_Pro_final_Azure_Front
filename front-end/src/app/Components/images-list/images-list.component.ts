@@ -4,6 +4,7 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
+  Renderer2,
 } from '@angular/core';
 import { ImagesListService } from '../../Services/images-list.service';
 import { Router } from '@angular/router';
@@ -23,6 +24,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   @ViewChild('EditNameModal') EditNameModal: any;
   @ViewChild('checkbox') checkbox!: ElementRef<HTMLInputElement>;
   @ViewChild('speechButton') speechButton!: ElementRef<HTMLButtonElement>;
+  @ViewChild('iframe') iframe!: ElementRef;
 
   imagesList: any[] = [];
   isLoading: boolean = false;
@@ -47,7 +49,8 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     public imagesListService: ImagesListService,
     private router: Router,
     private modalService: NgbModal,
-    public voiceRecognitionService: VoiceRecognitionService
+    public voiceRecognitionService: VoiceRecognitionService,
+    private renderer: Renderer2
   ) {
     this.voiceRecognitionService.init();
   }
@@ -68,14 +71,13 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   }
 
   onDeleteSelectedImages(): void {
-    console.log('selected images', this.selectedImages)
+    console.log('selected images', this.selectedImages);
     this.selectedImages.forEach((imageId) => {
       this.imagesListService.deleteImage(imageId).subscribe(() => {
         console.log('deleted image id', imageId);
         this.getImages();
       });
     });
-  
   }
 
   onCheckboxChange(event: any, value: string): void {
@@ -178,15 +180,30 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   toggleVoiceRecognition(): void {
     try {
       if (this.isListening === false) {
-          this.voiceRecognitionService.start();
-          this.isListening = true;
-        } else {
-          this.voiceRecognitionService.stop();
-          this.searchPhrase = this.voiceRecognitionService.text;
-          this.onSearch();
-          this.voiceRecognitionService.text = '';
-          this.isListening = false;
+        this.voiceRecognitionService.start();
+        this.isListening = true;
+        const iframe = document.getElementById(
+          'da-iframe'
+        ) as HTMLIFrameElement;
+        const iframeWin = iframe.contentWindow;
+
+        if (iframeWin) {
+          iframeWin.postMessage('hello', 'http://127.0.0.1:5500');
         }
+      } else {
+        this.voiceRecognitionService.stop();
+        this.searchPhrase = this.voiceRecognitionService.text;
+        this.onSearch();
+        this.voiceRecognitionService.text = '';
+        this.isListening = false;
+        const iframe = document.getElementById(
+          'da-iframe'
+        ) as HTMLIFrameElement;
+        const iframeWin = iframe.contentWindow;
+        if (iframeWin) {
+          iframeWin.postMessage('done', 'http://127.0.0.1:5500');
+        }
+      }
     } catch (error) {
       this.voiceRecognitionService.stop();
       this.searchPhrase = this.voiceRecognitionService.text;
@@ -194,6 +211,5 @@ export class ImagesListComponent implements OnInit, OnDestroy {
       this.voiceRecognitionService.text = '';
       this.isListening = false;
     }
-    
   }
 }
