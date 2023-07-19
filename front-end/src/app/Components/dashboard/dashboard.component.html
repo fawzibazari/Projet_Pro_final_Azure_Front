@@ -1,9 +1,83 @@
-<div class="container">
-  <div class="row d-flex m-auto">
-    <label for="formFileMultiple" class="form-label">Charger des images</label>
-    <div class="col-md-10">
+<div class="container mt-5">
+  <div class="row d-flex m-auto"></div>
+  <div *ngIf="!loaded && inputValue !== ''">
+    <!-- Modal -->
+    <div
+      class="modal"
+      id="inputImageModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="Close"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-between">
+            <h5 class="modal-title" id="imageModalLabel">Images récupérées</h5>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              aria-label="Close"
+              onclick="document.getElementById('inputImageModal').classList.toggle('modal-close, fade');"
+              (click)="inputValue = ''"
+            >
+              Close
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Afficher les images récupérées ici ! -->
+            <img [src]="imageSrc" class="img-thumbnail img-upload" />
+          </div>
+          <div class="modal-footer">
+            <div class="spinner-border" role="status" *ngIf="loading">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="check-icon d-inline" *ngIf="loaded">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div
+              class="d-flex text-center align-item-center"
+              *ngIf="inputValue !== ''"
+            >
+              <button
+                type="submit"
+                class="btn btn-secondary"
+                (click)="handleSubmit($event)"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Charger l'image"
+              >
+                <i class="bi bi-upload"></i> Upload
+              </button>
+              <button class="delete btn btn-danger" (click)="inputValue = ''">
+                <i class="bi bi-trash"></i> Remove
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center mt-2">
+          <div class="alert alert-success" role="alert" *ngIf="loaded">
+            {{ alertMessage }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="container__drop container">
+    <div class="container__dot">
+      <img
+        src="../../../assets/images/upload.png"
+        alt=""
+        class="container__image"
+      />
       <input
-        class="form-control"
+        class="btn btn-lg"
         type="file"
         #fileUpload
         accept="image/*"
@@ -12,39 +86,9 @@
         id="formFileMultiple"
         multiple
       />
-    </div>
-    <div class="col-md-1">
-      <div class="spinner-border" role="status" *ngIf="loading">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <div class="check-icon d-inline" *ngIf="loaded">
-        <i class="bi bi-check-circle"></i>
-      </div>
-    </div>
-    <div class="col-md-1 d-flextext-center" *ngIf="inputValue !== ''">
-      <button
-        type="submit"
-        class="btn btn-secondary"
-        (click)="handleSubmit($event)"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Charger l'image"
+      <label for="formFileMultiple" class="form-label"
+        >Upload your images</label
       >
-        <i class="bi bi-upload"></i>
-      </button>
-      <button class="delete btn btn-danger" (click)="inputValue = ''">
-        <i class="bi bi-trash"></i>
-      </button>
-    </div>
-  </div>
-  <div class="d-flex justify-content-center mt-2">
-    <div class="alert alert-success" role="alert" *ngIf="loaded">
-      {{ alertMessage }}
-    </div>
-  </div>
-  <div *ngIf="!loaded && inputValue !== ''">
-    <div class="text-center mt-5">
-      <img [src]="imageSrc" class="rounded mx-auto d-block" />
     </div>
   </div>
 </div>

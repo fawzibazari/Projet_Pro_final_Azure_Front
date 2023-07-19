@@ -12,7 +12,7 @@
         <a class="nav__link px-2" [routerLink]="['home']" routerLinkActive="active">Home</a>
       </li>
       <li>
-        <a class="nav__link px-2" [routerLink]="['dashboard']" routerLinkActive="active">Dashboard</a>
+        <a class="nav__link px-2" [routerLink]="['dashboard']" routerLinkActive="active">Upload</a>
       </li>
       <li>
         <a class="nav__link px-2" [routerLink]="['images-list']" routerLinkActive="active">Stock</a>
@@ -22,17 +22,17 @@
       </li>
     </ul>
   <div class="text-end my-auto me-2" *ngIf="!authService.isAuthenticated()">
-    <button class="btn-login me-2" [routerLink]="['/login']">Connexion</button>
-    <button class="btn-signup" [routerLink]="['/signup']">Inscription</button>
+    <button class="btn-login me-2" [routerLink]="['/login']">Sign In</button>
+    <button class="btn-signup" [routerLink]="['/signup']">Sign Up</button>
   </div>
   <div class="col text-end me-1" *ngIf="authService.isAuthenticated()">
     <div ngbDropdown class="d-inline-block">
       <button type="button" class="btn btn-signup" aria-haspopup="true"
         id="logoutDropDown" aria-expanded="false" ngbDropdownToggle>
-        Mon compte
+        My Account
       </button>
       <div ngbDropdownMenu="logoutDropDown">
-        <button ngbDropdownItem class="text-secondary" (click)="logout()">Déconnexion</button>
+        <button ngbDropdownItem class="text-secondary" (click)="logout()">Logout</button>
       </div>
     </div>
     </div>
