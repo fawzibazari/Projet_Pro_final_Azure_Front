@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -7,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('fileUpload', { static: false }) fileUpload!: ElementRef;
+  @ViewChild('uploadModal') uploadModal: any;
 
   DJANGO_SERVER: string = 'https://azuroo-api.azurewebsites.net';
   imageSrc: string = '';
@@ -17,8 +20,9 @@ export class DashboardComponent implements OnInit {
   loading: boolean = false;
   alertMessage: string = '';
   inputValue: string = '';
+  closeModal: any;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private modalService: NgbModal) {}
 
   ngOnInit(): void {}
 
@@ -74,5 +78,9 @@ export class DashboardComponent implements OnInit {
             "Une erreur est survenue lors du chargement de l'image !";
         }
       );
+  }
+
+  openUploadModal() {
+    this.modalService.open(this.uploadModal, { centered: true });
   }
 }
