@@ -3,22 +3,21 @@ import { Injectable } from '@angular/core';
 declare var webkitSpeechRecognition: any;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VoiceRecognitionService {
-
   recognition = new webkitSpeechRecognition();
   isStoppedSpeechRecog = false;
   public text = '';
   tempWords!: string;
 
-  constructor() { }
+  constructor() {}
 
   init() {
     this.recognition.continuous = true;
     this.recognition.interimResults = true;
     this.recognition.lang = 'en-US';
-    
+
     this.recognition.addEventListener('result', (e: any) => {
       const transcript = Array.from(e.results) // e.results is a list of all the words that have been recognized
         .map((result: any) => result[0]) // result[0] is the first alternative of the most recent SpeechRecognitionResult
@@ -32,13 +31,13 @@ export class VoiceRecognitionService {
   start() {
     this.isStoppedSpeechRecog = false;
     this.recognition.start();
-    console.log("Speech recognition started")
+    console.log('Speech recognition started');
     this.recognition.addEventListener('end', () => {
       if (this.isStoppedSpeechRecog) {
         this.recognition.stop();
-        console.log("End speech recognition")
+        console.log('End speech recognition');
       } else {
-        this.wordConcat()
+        this.wordConcat();
         this.recognition.start();
       }
     });
@@ -46,9 +45,9 @@ export class VoiceRecognitionService {
 
   stop() {
     this.isStoppedSpeechRecog = true;
-    this.wordConcat()
+    this.wordConcat();
     this.recognition.stop();
-    console.log("End speech recognition")
+    console.log('End speech recognition');
     this.tempWords = '';
   }
 
@@ -60,6 +59,5 @@ export class VoiceRecognitionService {
       this.text = this.text + ' ' + this.tempWords;
       this.tempWords = '';
     }
-    
   }
 }
