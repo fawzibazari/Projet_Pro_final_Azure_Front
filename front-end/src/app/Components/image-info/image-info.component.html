@@ -1,11 +1,11 @@
 <div class="container">
-  <p class="display-5">{{description | titlecase}}</p>
+  <p class="display-5">{{ description }}</p>
   <div class="row">
     <div class="col">
-      <img [src]="imageUrl" alt="">
+      <img [src]="imageUrl" alt="" class="img__bg">
     </div>
-    <div class="col">
-      <p class="lead"><strong>Description :</strong> {{description | titlecase}} - <span
+    <div class="col col__background">
+      <p class="lead"><strong>Description :</strong> {{description}} - <span
           class="text-info">{{ confidence | percent }}</span></p>
       <p class="lead">Tags :</p>
       <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of tags.slice(0, 3)">
@@ -14,7 +14,7 @@
       <div>
         <button class="btn btn-primary" type="button" class="btn btn-outline-primary" (click)="collapse.toggle()"
           [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-          voir plus
+          See more
         </button>
         <div>
           <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="triangle">
@@ -35,19 +35,24 @@
   </div>
 </div>
 
-<div class="container" style="margin-top:50px;">
+<div class="container my-5 py-5 col__background" style="margin-top:50px;">
   <div class="row">
+    <div class="col__info col-md-3">
+      <p class="picto-item">Similar images</p>
+
+      <img src="../../../assets/images/man.png" alt="" class="img__info">
+    </div>
     <div class="col-md-3" *ngFor="let found of imagesListSimilarity.slice(0, 3)">
       <div class="card-sl">
         <a [routerLink]="['/image-info', found._id]">
-          <div class="card-image">
+          <div class="card-image list__image">
             <img [src]="found.url" />
           </div>
         </a>
         <div class="card-heading">
           {{ found.description.captions[0].text | titlecase }}
         </div>
-        <a [routerLink]="['/image-info', found._id]" class="card-button" type="button">Voir</a>
+        <a [routerLink]="['/image-info/', found._id]" class="card-button list__button" type="button">More</a>     
       </div>
     </div>
   </div>
