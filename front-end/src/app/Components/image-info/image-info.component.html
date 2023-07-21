@@ -2,48 +2,78 @@
   <p class="display-5">{{ description }}</p>
   <div class="row">
     <div class="col">
-      <img [src]="imageUrl" alt="" class="img__bg">
+      <img [src]="imageUrl" alt="" class="img__bg" />
     </div>
-    <div class="col col__background">
-      <p class="lead"><strong>Description :</strong> {{description}} - <span
-          class="text-info">{{ confidence | percent }}</span></p>
-      <p class="lead">Tags :</p>
-      <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of tags.slice(0, 3)">
+    <div
+      class="col col__background d-flex flex-column align-items-center justify-content-around"
+    >
+      <p class="lead">
+        <strong>Description :</strong> {{ description }} -
+        <span class="text-scondary percent__tag">{{ confidence | percent }}</span>
+      </p>
+      <div class="lead">Tags :
+      <p
+        class="badge rounded-pill me-1 my-auto text-white lead__tag"
+        *ngFor="let tag of tags.slice(0, 3)"
+      >
         {{ tag }}
       </p>
+      </div>  
       <div>
-        <button class="btn btn-primary" type="button" class="btn btn-outline-primary" (click)="collapse.toggle()"
-          [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+        <button
+          class="btn btn-primary"
+          type="button"
+          class="btn lead__tag"
+          (click)="collapse.toggle()"
+          [attr.aria-expanded]="!isCollapsed"
+          aria-controls="collapseExample"
+        >
           See more
         </button>
         <div>
-          <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="triangle">
-            <div class="card card-body" style="width: 300px;">
+          <div
+            #collapse="ngbCollapse"
+            [(ngbCollapse)]="isCollapsed"
+            class="triangle"
+          >
+            <div class="card card-body" style="width: 300px">
               <div class="card-text">
-                <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of tags">{{ tag }}</p>
+                <p
+                  class="badge rounded-pill bg-info me-1 my-auto text-dark"
+                  *ngFor="let tag of tags"
+                >
+                  {{ tag }}
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- <p>Catégories :</p>
-      <p class="badge rounded-pill bg-info me-1 my-auto text-dark"
-        *ngFor="let category of categories">
+      <p>Catégories :</p>
+      <p
+        class="badge rounded-pill bg-info me-1 my-auto text-dark"
+        *ngFor="let category of categories"
+      >
         {{ category }}
-      </p> -->
+      </p>
     </div>
   </div>
 </div>
 
-<div class="container my-5 py-5 col__background" style="margin-top:50px;">
+<div class="container my-5 py-5 col__background" style="margin-top: 50px" *ngIf="imagesListSimilarity.length > 0">
   <div class="row">
     <div class="col__info col-md-3">
-      <p class="picto-item">Similar images</p>
+      <p class="picto-item">If you want to see similar images</p>
 
-      <img src="../../../assets/images/man.png" alt="" class="img__info">
+      <img src="../../../assets/images/man.png" alt="" class="img__info" />
     </div>
-    <div class="col-md-3" *ngFor="let found of imagesListSimilarity.slice(0, 3)">
-      <div class="card-sl">
+    <div
+      class="col mx-3 card card__bg"
+      *ngFor="let found of imagesListSimilarity.slice(0, 3)"
+    >
+      <div
+        class="card-sl my-2 d-flex flex-column justify-content-between align-items-center"
+      >
         <a [routerLink]="['/image-info', found._id]">
           <div class="card-image list__image">
             <img [src]="found.url" />
@@ -52,7 +82,13 @@
         <div class="card-heading">
           {{ found.description.captions[0].text | titlecase }}
         </div>
-        <a [routerLink]="['/image-info/', found._id]" class="card-button list__button" type="button">More</a>     
+        <a
+          [routerLink]="['/image-info/', found._id]"
+          class="card-button list__button"
+          type="button"
+          >More</a
+        >
       </div>
     </div>
   </div>
+</div>
