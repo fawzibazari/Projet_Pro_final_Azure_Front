@@ -50,6 +50,8 @@
   padding: 15px;
   border-radius: 20px;
   width: 100%;
+  max-width: 200px;
+  text-align: center;
 }
 
 .picto-item::after {
@@ -64,8 +66,6 @@
 }
 
 .list__button {
-  background-color: #cd86c9;
-  border-color: #cd86c9;
   font-family: "Popins", sans-serif;
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -76,10 +76,43 @@
   color: black;
   transition: all 0.3s ease-in-out;
   text-decoration: none;
+
+  background-color: #7f57c9;
+  box-shadow: 0 5px 15px rgba(145, 92, 182, 0.4);
 }
 
 .list__button:hover {
   background-color: #7f57c9;
   border-color: #8157cf;
   color: #fff;
+}
+
+.card--bg {
+  background: rgba(255, 255, 255, 0.428);
+  border-radius: 20px;
+}
+
+.percent__tag {
+  background-color: #7f57c9;
+  box-shadow: 8px 5px 13px 3px rgba(211, 150, 255, 0.399);
+
+  color: white;
+  padding: 20px 10px;
+  -webkit-clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  );
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.lead__tag {
+  border: 3px solid #a40fc972;
+  background-color: #a40fc972;
+  -webkit-box-shadow:0px 0px 66px 45px #a40fc972;
+-moz-box-shadow: 0px 0px 66px 45px #a40fc972;
+box-shadow: 0px 0px 66px 45px rgba(224,99,255,0.31);
 }
