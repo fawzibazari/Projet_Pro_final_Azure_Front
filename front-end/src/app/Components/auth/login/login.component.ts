@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../../Services/auth.service';
 
+declare var particlesJS: any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
