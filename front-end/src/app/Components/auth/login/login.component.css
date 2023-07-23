@@ -93,3 +93,44 @@
   border-color: #8157cf;
   color: white;
 }
+
+/* blur effect */
+.blur {
+  background: rgba(255, 255, 255, 0.27);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.lign {
+  position: relative;
+}
+.lign:before {
+  content: "";
+  display: block;
+  width: 160px;
+  height: 1px;
+  background: #be7db9;
+  left: 100px;
+  top: 35%;
+  position: absolute;
+}
+.lign:after {
+  content: "";
+  display: block;
+  width: 160px;
+  height: 1px;
+  background: #be7db9;
+  right: 100px;
+  top: 35%;
+  position: absolute;
+}
+
+.tech-talks > img {
+  max-width: 500px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

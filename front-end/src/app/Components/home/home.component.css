@@ -1,7 +1,6 @@
 .home__left {
     position: relative;
     padding: 10px 20px;
-
 }
 
 .home__left::before {
@@ -23,6 +22,12 @@
     z-index: 5 !important;
 } */
 
+.home__container {
+    background-image: url("../../../assets/images/emoji.png");
+    background-size: auto 100%;
+    background-position: center;
+}
+
 .home__heading {
     font-family: "Lato", sans-serif;
     font-weight: bold;
@@ -41,9 +46,21 @@
     line-height: 2.5rem;
 }
 
-.robot {
-    max-width: 600px;
+.tilt-element {
+  perspective: 500px;
+  transition: transform 0.3s ease;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.robott:hover {
+  transform: scale(1.1) rotateX(-20deg) rotateY(20deg);
+}
+
+.robot > img {
+    max-width: 800px;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+
