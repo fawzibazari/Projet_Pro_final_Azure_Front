@@ -19,6 +19,8 @@ export class VoiceRecognitionService {
     this.recognition.lang = 'en-US';
 
     this.recognition.addEventListener('result', (e: any) => {
+      console.log(e);
+
       const transcript = Array.from(e.results) // e.results is a list of all the words that have been recognized
         .map((result: any) => result[0]) // result[0] is the first alternative of the most recent SpeechRecognitionResult
         .map((result: any) => result.transcript) // result.transcript is the recognized word

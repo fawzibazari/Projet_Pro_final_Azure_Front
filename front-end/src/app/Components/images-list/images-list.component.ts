@@ -4,7 +4,6 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
-  Renderer2,
 } from '@angular/core';
 import { ImagesListService } from '../../Services/images-list.service';
 import { Router } from '@angular/router';
@@ -13,6 +12,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { VoiceRecognitionService } from '../../Services/voice-recognition.service';
+
+declare var window: any;
 
 @Component({
   selector: 'app-images-list',
@@ -49,8 +50,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     public imagesListService: ImagesListService,
     private router: Router,
     private modalService: NgbModal,
-    public voiceRecognitionService: VoiceRecognitionService,
-    private renderer: Renderer2
+    public voiceRecognitionService: VoiceRecognitionService
   ) {
     this.voiceRecognitionService.init();
   }
@@ -178,38 +178,32 @@ export class ImagesListComponent implements OnInit, OnDestroy {
 
   // voice search
   toggleVoiceRecognition(): void {
+    const iframe = document.getElementById('da-iframe') as HTMLIFrameElement;
+    const iframeWin = iframe.contentWindow;
+
     try {
       if (this.isListening === false) {
-        this.voiceRecognitionService.start();
         this.isListening = true;
-        const iframe = document.getElementById(
-          'da-iframe'
-        ) as HTMLIFrameElement;
-        const iframeWin = iframe.contentWindow;
 
         if (iframeWin) {
           iframeWin.postMessage('hello', 'http://127.0.0.1:5500');
+          window.addEventListener('message', (ev: any) => {
+            if (ev.origin == 'http://127.0.0.1:5500') {
+              console.log(ev.data.message);
+              this.searchPhrase = ev.data.message;
+              this.onSearch();
+              this.voiceRecognitionService.text = '';
+            }
+          });
         }
       } else {
-        this.voiceRecognitionService.stop();
-        this.searchPhrase = this.voiceRecognitionService.text;
-        this.onSearch();
-        this.voiceRecognitionService.text = '';
-        this.isListening = false;
-        const iframe = document.getElementById(
-          'da-iframe'
-        ) as HTMLIFrameElement;
-        const iframeWin = iframe.contentWindow;
         if (iframeWin) {
           iframeWin.postMessage('done', 'http://127.0.0.1:5500');
+          this.isListening = false;
         }
       }
     } catch (error) {
-      this.voiceRecognitionService.stop();
-      this.searchPhrase = this.voiceRecognitionService.text;
-      this.onSearch();
-      this.voiceRecognitionService.text = '';
-      this.isListening = false;
+      console.log(error);
     }
   }
 }
