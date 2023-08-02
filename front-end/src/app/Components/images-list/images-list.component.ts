@@ -186,9 +186,9 @@ export class ImagesListComponent implements OnInit, OnDestroy {
         this.isListening = true;
 
         if (iframeWin) {
-          iframeWin.postMessage('hello', 'http://127.0.0.1:5500');
+          iframeWin.postMessage('hello', 'https://audio-visualizer-weld.vercel.app');
           window.addEventListener('message', (ev: any) => {
-            if (ev.origin == 'http://127.0.0.1:5500') {
+            if (ev.origin == 'https://audio-visualizer-weld.vercel.app') {
               console.log(ev.data.message);
               this.searchPhrase = ev.data.message;
               this.onSearch();
@@ -198,7 +198,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
         }
       } else {
         if (iframeWin) {
-          iframeWin.postMessage('done', 'http://127.0.0.1:5500');
+          iframeWin.postMessage('done', 'https://audio-visualizer-weld.vercel.app');
           this.isListening = false;
         }
       }
