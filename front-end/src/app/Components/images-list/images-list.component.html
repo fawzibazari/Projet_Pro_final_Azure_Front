@@ -27,6 +27,16 @@
           (click)="isList = false; isGrid = true; isChecked = true">
         <label class="btn btn-outline-secondary" for="grid"><i class="bi bi-grid"></i></label>
       </div>
+      <div class="btn-group" role="group" aria-label="Fourth group">
+        <select class="form-select" (change)="onSortBy($event)">
+          <option value="date">Date</option>
+          <option value="confidence">Confidence</option>
+          <option value="description">Description</option>
+        </select>
+        <button class="btn btn-outline-secondary" (click)="toggleSortOrder($event)">
+          <i [ngClass]="{'bi bi-arrow-down': isAscending, 'bi bi-arrow-up': !isAscending}"></i>
+        </button>
+      </div>
       <div class="btn-group me-2" role="group" aria-label="Fifth group">
         <p class="text my-auto">{{ nbImages }}</p>
       </div>
@@ -56,12 +66,6 @@
 <!-- display grid -->
 <div class="container-fluid" *ngIf="isGrid && imagesProperty === 'all'">
   <div class="section-gray scroll4" (scroll)="onScroll($event)">
-    <div class="text-center" *ngIf="noImages">
-      <img src="../../../assets/images/no_result.png" class="container__image">
-      <p style="color: rgb(255, 217, 0); font-size: xx-large">No results found</p>
-      <p style="font-size: medium;">We couldn't find what you searched for.</p>
-      <p style="font-size: small;">Try searching again</p>
-    </div>
     <!-- flip-card-container -->
     <div class="wrapper">
       <div class="row justify-content-around">
@@ -104,6 +108,12 @@
 </div>
 <div class="container-fluid" *ngIf="isGrid && imagesProperty === 'similarity'">
   <div class="section-gray scroll4" (scroll)="onScroll($event)">
+    <div class="text-center" *ngIf="noImages">
+      <img src="../../../assets/images/no_result.png" class="container__image">
+      <p style="color: rgb(255, 217, 0); font-size: xx-large">No results found</p>
+      <p style="font-size: medium;">We couldn't find what you searched for.</p>
+      <p style="font-size: small;">Try searching again</p>
+    </div>
     <!-- flip-card-container -->
     <div class="wrapper">
       <div class="row justify-content-around">
@@ -203,12 +213,6 @@
         </a>
       </div>
     </div>
-    <div class="text-center" *ngIf="noImages">
-      <img src="../../../assets/images/no_result.png" class="container__image">
-      <p style="color: rgb(255, 217, 0); font-size: xx-large">No results found</p>
-      <p style="font-size: medium;">We couldn't find what you searched for.</p>
-      <p style="font-size: small;">Try searching again</p>
-    </div>
   </div>
 
 </div>
@@ -268,6 +272,12 @@
           <i class="bi bi-cloud-download"></i>
         </a>
       </div>
+    </div>
+    <div class="text-center" *ngIf="noImages">
+      <img src="../../../assets/images/no_result.png" class="container__image">
+      <p style="color: rgb(255, 217, 0); font-size: xx-large">No results found</p>
+      <p style="font-size: medium;">We couldn't find what you searched for.</p>
+      <p style="font-size: small;">Try searching again</p>
     </div>
   </div>
 </div>

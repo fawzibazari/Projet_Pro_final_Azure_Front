@@ -179,6 +179,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   // text search
   onSearch(): void {
     this.noImages = false;
+    this.imagesProperty = 'all';
     if (this.searchPhrase.trim() === '' || this.searchPhrase === null || this.searchPhrase === undefined) {
       this.getImages();
       console.log('empty search');
@@ -192,12 +193,14 @@ export class ImagesListComponent implements OnInit, OnDestroy {
           this.nbImages = data.similarity.length;
           if (this.nbImages === 0) {
             console.log('no images found');
+            this.imagesProperty = 'similarity';
             this.noImages = true;
           }
           if ( (this.searchPhrase === '' || this.searchPhrase === null || this.searchPhrase === undefined) && this.nbImages === 0) {
             console.log('no images found');
             this.getImages();
             this.noImages = false;
+            this.imagesProperty = 'all'
           }
           this.isLoading = false;
         });
