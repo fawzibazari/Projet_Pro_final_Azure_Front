@@ -42,6 +42,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   isAscending: boolean = true;
   sortByProperty: string = 'date';
   deletingInProgress = false;
+  noImages: boolean = false;
 
   searchPhrase: string = '';
   imagesSimilarity: any[] = [];
@@ -177,7 +178,8 @@ export class ImagesListComponent implements OnInit, OnDestroy {
 
   // text search
   onSearch(): void {
-    if (this.searchPhrase.trim() === '' || this.searchPhrase === null) {
+    this.noImages = false;
+    if (this.searchPhrase.trim() === '' || this.searchPhrase === null || this.searchPhrase === undefined) {
       this.getImages();
       console.log('empty search');
     } else {
@@ -188,6 +190,15 @@ export class ImagesListComponent implements OnInit, OnDestroy {
           console.log('data', data);
           this.imagesList = data.similarity;
           this.nbImages = data.similarity.length;
+          if (this.nbImages === 0) {
+            console.log('no images found');
+            this.noImages = true;
+          }
+          if ( (this.searchPhrase === '' || this.searchPhrase === null || this.searchPhrase === undefined) && this.nbImages === 0) {
+            console.log('no images found');
+            this.getImages();
+            this.noImages = false;
+          }
           this.isLoading = false;
         });
       console.log('search', this.searchPhrase);
