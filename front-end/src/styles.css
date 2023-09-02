@@ -7,6 +7,7 @@ body {
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
+  overflow-y: auto;
   font-family: "Popins", sans-serif;
   background: url("./assets/images/fond.png") no-repeat center center fixed;
   cursor: url("https://assets-global.website-files.com/60b118690f8e028ab7d93790/6102ad7e3ac0cbabbfd3b5d3_Cursor.svg") 2 2, auto;
