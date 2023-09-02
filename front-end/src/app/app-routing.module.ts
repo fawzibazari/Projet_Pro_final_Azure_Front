@@ -10,6 +10,7 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { ImagesListComponent } from './Components/images-list/images-list.component';
 import { NotFoundComponent } from './Components/not-found/not-found.component';
 import { ImageInfoComponent } from './Components/image-info/image-info.component';
+import { StatsComponent } from './Components/stats/stats.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'signup', component: SignUpComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'images-list', component: ImagesListComponent },
+  { path: 'stats', component: StatsComponent },
   { path: 'image-info/:imageId', component: ImageInfoComponent },
   { path: '**', pathMatch: 'full', component: NotFoundComponent },
 ];

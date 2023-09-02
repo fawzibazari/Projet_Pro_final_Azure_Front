@@ -18,6 +18,7 @@ import { ImagesListComponent } from './Components/images-list/images-list.compon
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotFoundComponent } from './Components/not-found/not-found.component';
 import { ImageInfoComponent } from './Components/image-info/image-info.component';
+import { StatsComponent } from './Components/stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ImageInfoComponent } from './Components/image-info/image-info.component
     ImagesListComponent,
     NotFoundComponent,
     ImageInfoComponent,
+    StatsComponent,
   ],
   imports: [
     BrowserModule,

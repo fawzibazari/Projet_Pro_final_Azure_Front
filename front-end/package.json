@@ -24,6 +24,7 @@
     "@types/offscreencanvas": "^2019.7.0",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.4",
+    "chart.js": "^4.4.0",
     "ng-rive": "^0.2.5",
     "ngx-infinite-scroll": "^0.4.0",
     "rxjs": "~7.5.0",

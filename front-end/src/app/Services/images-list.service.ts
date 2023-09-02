@@ -22,6 +22,10 @@ export class ImagesListService {
     return this.http.get(`${this.DJANGO_SERVER_URL}/list`);
   }
 
+  getImagesStats(): Observable<any> {
+    return this.http.get(`${this.DJANGO_SERVER_URL}/stats`);
+  }
+
   deleteImage(imageId: string): Observable<any> {
     // delete by id
     return this.http.delete(`${this.DJANGO_SERVER_URL}/actions/${imageId}`);
