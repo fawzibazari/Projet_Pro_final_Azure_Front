@@ -11,7 +11,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('fileUpload', { static: false }) fileUpload!: ElementRef;
   @ViewChild('uploadModal') uploadModal: any;
 
-  DJANGO_SERVER: string = 'https://azuroo-api.azurewebsites.net';
+  DJANGO_SERVER: string = 'https://projet-pro-final-azure-back.vercel.app';
   imageSrc: string = '';
   fileName: any;
   fileType: any;

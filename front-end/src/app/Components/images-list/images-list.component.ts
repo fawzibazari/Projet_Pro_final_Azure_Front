@@ -13,6 +13,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { VoiceRecognitionService } from '../../Services/voice-recognition.service';
 
+declare var window: any;
+
 @Component({
   selector: 'app-images-list',
   templateUrl: './images-list.component.html',
@@ -23,6 +25,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   @ViewChild('EditNameModal') EditNameModal: any;
   @ViewChild('checkbox') checkbox!: ElementRef<HTMLInputElement>;
   @ViewChild('speechButton') speechButton!: ElementRef<HTMLButtonElement>;
+  @ViewChild('iframe') iframe!: ElementRef;
 
   imagesList: any[] = [];
   isLoading: boolean = false;
@@ -68,14 +71,13 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   }
 
   onDeleteSelectedImages(): void {
-    console.log('selected images', this.selectedImages)
+    console.log('selected images', this.selectedImages);
     this.selectedImages.forEach((imageId) => {
       this.imagesListService.deleteImage(imageId).subscribe(() => {
         console.log('deleted image id', imageId);
         this.getImages();
       });
     });
-  
   }
 
   onCheckboxChange(event: any, value: string): void {
@@ -176,24 +178,32 @@ export class ImagesListComponent implements OnInit, OnDestroy {
 
   // voice search
   toggleVoiceRecognition(): void {
+    const iframe = document.getElementById('da-iframe') as HTMLIFrameElement;
+    const iframeWin = iframe.contentWindow;
+
     try {
       if (this.isListening === false) {
-          this.voiceRecognitionService.start();
-          this.isListening = true;
-        } else {
-          this.voiceRecognitionService.stop();
-          this.searchPhrase = this.voiceRecognitionService.text;
-          this.onSearch();
-          this.voiceRecognitionService.text = '';
+        this.isListening = true;
+
+        if (iframeWin) {
+          iframeWin.postMessage('hello', 'https://audio-visualizer-weld.vercel.app');
+          window.addEventListener('message', (ev: any) => {
+            if (ev.origin == 'https://audio-visualizer-weld.vercel.app') {
+              console.log(ev.data.message);
+              this.searchPhrase = ev.data.message;
+              this.onSearch();
+              this.voiceRecognitionService.text = '';
+            }
+          });
+        }
+      } else {
+        if (iframeWin) {
+          iframeWin.postMessage('done', 'https://audio-visualizer-weld.vercel.app');
           this.isListening = false;
         }
+      }
     } catch (error) {
-      this.voiceRecognitionService.stop();
-      this.searchPhrase = this.voiceRecognitionService.text;
-      this.onSearch();
-      this.voiceRecognitionService.text = '';
-      this.isListening = false;
+      console.log(error);
     }
-    
   }
 }

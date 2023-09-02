@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ImagesListService {
 
-  DJANGO_SERVER_URL = "https://azuroo-api.azurewebsites.net/api";
+  DJANGO_SERVER_URL = "https://projet-pro-final-azure-back.vercel.app/api";
 
   constructor(
     private http: HttpClient,

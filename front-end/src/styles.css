@@ -9,4 +9,8 @@ body {
   overflow-x: hidden;
   font-family: "Popins", sans-serif;
   background: url("./assets/images/fond.png") no-repeat center center fixed;
+  cursor: url("https://assets-global.website-files.com/60b118690f8e028ab7d93790/6102ad7e3ac0cbabbfd3b5d3_Cursor.svg") 2 2, auto;
+}
+a {
+  cursor: url("https://assets-global.website-files.com/60b118690f8e028ab7d93790/6102ad7e954507b8d406407f_Pointer.svg") 5 12, auto;
 }
