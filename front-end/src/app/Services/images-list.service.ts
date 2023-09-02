@@ -31,6 +31,11 @@ export class ImagesListService {
     return this.http.delete(`${this.DJANGO_SERVER_URL}/actions/${imageId}`);
   }
 
+  deleteMultipleImages(imagesIds: string[]): Observable<any> {
+    // delete by id
+    return this.http.delete(`${this.DJANGO_SERVER_URL}/delete-multi`, {body: {images_id: imagesIds}}); // images_id = {images_id: [id1, id2, id3]}
+  }
+
   getImagesListWithPagination(number: number, limit: number): Observable<any> {
     return this.http.get(`${this.DJANGO_SERVER_URL}/list/${number}/${limit}`);
   }

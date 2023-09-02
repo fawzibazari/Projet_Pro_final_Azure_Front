@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { VoiceRecognitionService } from '../../Services/voice-recognition.service';
 
@@ -26,6 +27,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   @ViewChild('checkbox') checkbox!: ElementRef<HTMLInputElement>;
   @ViewChild('speechButton') speechButton!: ElementRef<HTMLButtonElement>;
   @ViewChild('iframe') iframe!: ElementRef;
+  @ViewChild('DeleteSelectedImageModal') DeleteSelectedImageModal: any;
 
   imagesList: any[] = [];
   isLoading: boolean = false;
@@ -37,8 +39,13 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   isChecked: boolean = true;
   isListening: boolean = false;
   selectedImages: string[] = [];
+  isAscending: boolean = true;
+  sortByProperty: string = 'date';
+  deletingInProgress = false;
 
   searchPhrase: string = '';
+  imagesSimilarity: any[] = [];
+  imagesProperty: string = 'all';
 
   EditImageNameForm = new FormGroup({
     imageName: new FormControl('', Validators.required),
@@ -50,7 +57,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     public imagesListService: ImagesListService,
     private router: Router,
     private modalService: NgbModal,
-    public voiceRecognitionService: VoiceRecognitionService
+    public voiceRecognitionService: VoiceRecognitionService,
   ) {
     this.voiceRecognitionService.init();
   }
@@ -71,13 +78,20 @@ export class ImagesListComponent implements OnInit, OnDestroy {
   }
 
   onDeleteSelectedImages(): void {
-    console.log('selected images', this.selectedImages);
-    this.selectedImages.forEach((imageId) => {
-      this.imagesListService.deleteImage(imageId).subscribe(() => {
-        console.log('deleted image id', imageId);
-        this.getImages();
-      });
-    });
+    this.deletingInProgress = true;
+
+    this.imagesListService.deleteMultipleImages(this.selectedImages).subscribe(() => {
+      console.log('deleted images', this.selectedImages);
+      this.getImages();
+      this.selectedImages = [];
+      this.deletingInProgress = false;
+      this.modalService.dismissAll();
+    },
+      (error) => {
+        console.error('Une errur s\'est produite lors de la suppression des images sélectionnées', error);
+        this.deletingInProgress = false;
+      }
+    );
   }
 
   onCheckboxChange(event: any, value: string): void {
@@ -157,9 +171,13 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     this.modalService.open(this.EditNameModal, { centered: true });
   }
 
+  openDeleteSelectedImageModal() {
+    this.modalService.open(this.DeleteSelectedImageModal, { centered: true });
+  }
+
   // text search
   onSearch(): void {
-    if (this.searchPhrase.trim() === '') {
+    if (this.searchPhrase.trim() === '' || this.searchPhrase === null) {
       this.getImages();
       console.log('empty search');
     } else {
@@ -204,6 +222,63 @@ export class ImagesListComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  onSelectAllImages(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    // Si la case à cocher "Tout sélectionner" est cochée, sélectionnez toutes les images
+    if (checkbox.checked) {
+      this.selectedImages = this.imagesList.map(image => image._id.$oid);
+    } else {
+      // Sinon, désélectionnez toutes les images
+      this.selectedImages = [];
+    }
+  }
+
+  toggleSortOrder(event: any): void {
+    this.isAscending = !this.isAscending;
+    console.log('isAscending', this.isAscending);
+    this.sortData();
+  }
+  onSortBy(event: any): void {
+    this.sortByProperty = event.target.value;
+    this.sortData();
+  }
+
+  sortData(): void {
+    switch (this.sortByProperty) {
+      case 'date':
+        this.imagesList.sort((a, b) => {
+          const dateA = new Date(a.datetime).getTime(); // convertir la date en timestamp
+          const dateB = new Date(b.datetime).getTime();
+          return dateA - dateB;
+        });
+        break;
+      case 'confidence':
+        this.imagesList.sort((a, b) => {
+          const confidenceA = a.description.captions[0].confidence;
+          const confidenceB = b.description.captions[0].confidence;
+          return confidenceA - confidenceB;
+        });
+        break;
+      case 'description':
+        this.imagesList.sort((a, b) => {
+          const descriptionA = a.description.captions[0].text.toUpperCase();
+          const descriptionB = b.description.captions[0].text.toUpperCase();
+          if (descriptionA < descriptionB) {
+            return -1;
+          }
+          if (descriptionA > descriptionB) {
+            return 1;
+          }
+          return 0;
+        });
+        break;
+    }
+    // Inverser l'ordre de tri si nécessaire
+    if (!this.isAscending) {
+      this.imagesList.reverse();
     }
   }
 }

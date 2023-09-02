@@ -1,27 +1,25 @@
 <div class="jumbotron jumbotron-fluid mb-3">
   <div class="container-fluid">
-    <h1 class="display-5">Découverez toutes les photos</h1>
-    <p class="lead">Trouvez l'image parfaite pour votre campagne marketing.</p>
+    <h1 class="display-7">Explore Our Complete Digital Marketing Photo Catalog</h1>
+    <p class="lead">Discover the Perfect Image for Your Marketing Campaign</p>
     <div class="btn-toolbar justify-content-sm-between" role="toolbar" aria-label="Toolbar with button groups">
       <div class="btn-group my-auto me-2" role="group" aria-label="First group">
         <input class="form-check-input" type="checkbox" name="selectAll" value="selectAll">
       </div>
       <div class="btn-group me-2" role="groupe" aria-label="Second group">
-        <label class="form-check-label my-auto" for="selectAll">Sélectionnés</label>
+        <label class="form-check-label my-auto" for="selectAll">Selected</label>
       </div>
       <div class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteSelectedImages()"><i class="bi bi-trash"></i></button>
+        <button type="button" class="btn btn-outline-danger me-1" (click)="openDeleteSelectedImageModal()"><i
+            class="bi bi-trash"></i></button>
       </div>
       <div class="btn-group me-2 w-50" role="group" aria-label="Fourth group">
-        <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher une image" [(ngModel)]="searchPhrase" (input)="onSearch()">
+        <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher une image"
+          [(ngModel)]="searchPhrase" (input)="onSearch()">
         <button class="btn btn-search" type="button" (click)="onSearch()"><i class="bi bi-search"></i></button>
-        <button 
-          class="btn btn-mic" 
-          type="button"
-          id="record"
-          (click)="toggleVoiceRecognition()">
+        <button class="btn btn-mic" type="button" id="record" (click)="toggleVoiceRecognition()" [attr.aria-expended]="isListening">
           <i [ngClass]="{'bi bi-mic-mute': isListening == false, 'bi bi-mic': isListening == true}"></i>
-        </button>             
+        </button>
       </div>
       <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="list" autocomplete="off"
@@ -37,15 +35,15 @@
     </div>
   </div>
 </div>
-
-<!-- audio visualizer-->
-<iframe id="da-iframe" style="width: 50%;height: 500px;" src="https://audio-visualizer-weld.vercel.app/index.html" allow="microphone" allowtransparency="true">
-</iframe>
-
+<div class="text-center justify-content-center" #collapse="ngbCollapse" [ngbCollapse]="!isListening">
+  <iframe id="da-iframe" style="width: 50%;height: 400px;" src="https://audio-visualizer-weld.vercel.app/index.html" allow="microphone"
+    allowtransparency="true">
+  </iframe>
+</div>
 <!-- display loading -->
 <div class="text-center justify-content-center" *ngIf="isLoading">
   <div>
-    Chargement en cours
+    Loading
     <div class="spinner-grow spinner-grow-sm text-primary" role="status">
       <span class="sr-only"></span>
     </div>
@@ -57,119 +55,249 @@
     </div>
   </div>
 </div>
-<!-- display list-->
-<div class="container-fluid" *ngIf="isList">
-  <div class="panel">
-    <div class="table-container">
-      <table class="table table-striped">
-        <thead class="bg-light w-100">
-          <tr class="d-flex">
-            <th class="col-1 text-center"><i class="bi bi-list"></i></th>
-            <th class="col-4 text-center">Description</th>
-            <th class="col-1 text-center">Fiabilité</th>
-            <th class="col-3 text-center">Tags</th>
-            <th class="col-3 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody (scroll)="onScroll($event)">
-          <tr class="d-flex infiniteScrollContainer" *ngFor="let image of imagesList">
-            <div class="d-flex" (mouseover)="image.hover = true" (mouseleave)="image.hover = false">
-              <div class="my-auto mr-1" *ngIf="image.hover || selectedImages.includes(image._id.$oid)">
-                <input type="checkbox" name="selectedImages" [value]="image._id.$oid" (change)="onCheckboxChange($event, image._id.$oid)">
+<!-- display grid -->
+<div class="container-fluid" *ngIf="isGrid && imagesProperty === 'all'">
+  <div class="section-gray scroll4" (scroll)="onScroll($event)">
+    <!-- flip-card-container -->
+    <div class="wrapper">
+      <div class="row justify-content-around">
+        <div class="col-12 col-md-6 col-lg-3 pb-5" ontouchstart="this.classList.toggle('hover');"
+          *ngFor="let image of imagesList">
+          <div class="container">
+            <div class="front" style="background-image: url({{image.url}})">
+              <div class="inner">
+                <p>{{ image.description.captions[0].text | titlecase }}</p>
               </div>
-              <td class="col-1 text-start">
-                <img src="{{ image.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle"/>
-              </td>
             </div>
-            <td class="col-4 text-center">
-              <p>{{ image.description.captions[0].text | titlecase}}</p>
-            </td>
-            <td class="col-1 text-center">
-              <span>{{ image.description.captions[0].confidence | percent }}</span>
-            </td>
-            <td class="col-3 text-center">
-              <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of image.tags.slice(0, 3)">
-                {{ tag.name }}</p>
-            </td>
-            <td class="col-3 text-center">
-              <button type="button" class="btn btn-outline-secondary me-1" (click)="openEditImageModal()">
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteImage(image._id.$oid)">
-                <i class="bi bi-trash"></i>
-              </button>
-              <a type="button" class="btn btn-outline-warning me-1" href="{{ image.url }}">
-                <i class="bi bi-cloud-download"></i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <div class="back">
+              <div class="inner">
+                <p style="font-size: medium;">{{ image.description.captions[0].text | titlecase }}</p>
+                <span>Confidence {{ image.description.captions[0].confidence | percent }}</span> <br>
+                <div>
+                  <span class="list-group">Tags :</span>
+                  <ul class="list-group list-group-flush" *ngFor="let tag of image.tags.slice(0, 3)">
+                    <li class="border-bottom list-group-item bg-transparent"> {{ tag.name }}</li>
+                  </ul>
+                </div>
+                <div class="mt-1">
+                  <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteImage(image._id.$oid)"><i
+                      class="bi bi-trash"></i></button>
+                  <a class="btn btn-download me-1" href="{{ image.url }}">
+                    <i class="bi bi-cloud-download"></i> Download
+                  </a>
+                  <button class="btn btn-signup mt-1" [routerLink]="['/image-info', image._id.$oid]">
+                    <i class="bi bi-info-lg"></i> More
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /flip-card-container -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid" *ngIf="isGrid && imagesProperty === 'similarity'">
+  <div class="section-gray scroll4" (scroll)="onScroll($event)">
+    <!-- flip-card-container -->
+    <div class="wrapper">
+      <div class="row justify-content-around">
+        <div class="col-12 col-md-6 col-lg-3 pb-5" ontouchstart="this.classList.toggle('hover');"
+          *ngFor="let image of imagesSimilarity">
+          <div class="container">
+            <div class="front" style="background-image: url({{image.url}})">
+              <div class="inner">
+                <p>{{ image.description.captions[0].text | titlecase }}</p>
+                <span>Similarity {{ image.similarity | percent }}</span>
+              </div>
+            </div>
+            <div class="back">
+              <div class="inner">
+                <p>{{ image.description.captions[0].text | titlecase }}</p>
+                <span>Similarity {{ image.similarity | percent }}</span> <br>
+                <div>
+                  <span class="list-group">Tags :</span>
+                  <ul class="list-group list-group-flush" *ngFor="let tag of image.tags.slice(0, 3)">
+                    <li class="border-bottom list-group-item bg-transparent"> {{ tag.name }}</li>
+                  </ul>
+                </div>
+                <div class="mt-1">
+                  <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteImage(image._id)"><i
+                      class="bi bi-trash"></i></button>
+                  <a class="btn btn-download me-1" href="{{ image.url }}">
+                    <i class="bi bi-cloud-download"></i> Download
+                  </a>
+                  <button class="btn btn-signup" [routerLink]="['/image-info', image._id]">
+                    <i class="bi bi-info-lg"></i> More
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /flip-card-container -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- display list -->
+<div class="container-fluid" *ngIf="isList && imagesProperty === 'all'">
+  <div class="section-gray scroll4" (scroll)="onScroll($event)">
+    <div class="shadow d-flex bd-highlight mb-3">
+      <div class="p-2 col-md-3 checkbox-wrapper-33 my-auto px-4 pb-2">
+        <label class="checkbox">
+          <input class="checkbox__trigger visuallyhidden" type="checkbox" name="sellectAll"
+            (change)="onSelectAllImages($event)">
+          <span class="checkbox__symbol">
+            <svg aria-hidden="true" class="icon-checkbox" width="28px" height="28px" viewBox="0 0 28 28" version="1"
+              xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 14l8 7L24 7"></path>
+            </svg>
+          </span>Select All
+          <p class="checkbox__textwrapper"></p>
+        </label>
+      </div>
+      <div class="p-2 col bd-highlight">Description</div>
+      <div class="p-2 col bd-highlight">Confidence</div>
+      <div class="p-2 col bd-highlight">Tags</div>
+      <div class="p-2 col bd-highlight">Actions</div>
+    </div>
+    <div class="d-flex bd-highlight" *ngFor="let image of imagesList" ngClass="{'selected', isChecked == true}">
+      <div class="p-2 checkbox-wrapper-33 my-auto px-4">
+        <label class="checkbox">
+          <input class="checkbox__trigger visuallyhidden" type="checkbox" name="selectedImages" [value]="image._id.$oid"
+            (change)="onCheckboxChange($event, image._id.$oid)">
+          <span class="checkbox__symbol">
+            <svg aria-hidden="true" class="icon-checkbox" width="28px" height="28px" viewBox="0 0 28 28" version="1"
+              xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 14l8 7L24 7"></path>
+            </svg>
+          </span>
+          <p class="checkbox__textwrapper"></p>
+        </label>
+      </div>
+      <div class="p-2 col">
+        <img src="{{ image.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
+      </div>
+      <div class="p-2 col">
+        <p>{{ image.description.captions[0].text | titlecase}}</p>
+      </div>
+      <div class="p-2 col">
+        <span>{{ image.description.captions[0].confidence | percent }}</span>
+      </div>
+      <div class="p-2 col">
+        <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of image.tags.slice(0, 3)">
+          {{ tag.name }}</p>
+      </div>
+      <div class="p-2 col">
+        <button type="button" class="btn btn-outline-secondary me-1" (click)="openEditImageModal()">
+          <i class="bi bi-pencil-square"></i>
+        </button>
+        <a type="button" class="btn btn-download me-1" href="{{ image.url }}">
+          <i class="bi bi-cloud-download"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid" *ngIf="isList && imagesProperty === 'similarity'">
+  <div class="section-gray scroll4" (scroll)="onScroll($event)">
+    <div class="shadow d-flex bd-highlight mb-3">
+      <div class="p-2 col-md-3 checkbox-wrapper-33 my-auto px-4 pb-2">
+        <label class="checkbox">
+          <input class="checkbox__trigger visuallyhidden" type="checkbox" name="sellectAll"
+            (change)="onSelectAllImages($event)">
+          <span class="checkbox__symbol">
+            <svg aria-hidden="true" class="icon-checkbox" width="28px" height="28px" viewBox="0 0 28 28" version="1"
+              xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 14l8 7L24 7"></path>
+            </svg>
+          </span>Select All
+          <p class="checkbox__textwrapper"></p>
+        </label>
+      </div>
+      <div class="p-2 col bd-highlight">Description</div>
+      <div class="p-2 col bd-highlight">Similarity</div>
+      <div class="p-2 col bd-highlight">Tags</div>
+      <div class="p-2 col bd-highlight">Actions</div>
+    </div>
+    <div class="d-flex bd-highlight" *ngFor="let image of imagesSimilarity" ngClass="{'selected', isChecked == true}">
+      <div class="p-2 checkbox-wrapper-33 my-auto px-4">
+        <label class="checkbox">
+          <input class="checkbox__trigger visuallyhidden" type="checkbox" name="selectedImages" [value]="image._id"
+            (change)="onCheckboxChange($event, image._id)">
+          <span class="checkbox__symbol">
+            <svg aria-hidden="true" class="icon-checkbox" width="28px" height="28px" viewBox="0 0 28 28" version="1"
+              xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 14l8 7L24 7"></path>
+            </svg>
+          </span>
+          <p class="checkbox__textwrapper"></p>
+        </label>
+      </div>
+      <div class="p-2 col">
+        <img src="{{ image.url }}" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
+      </div>
+      <div class="p-2 col">
+        <p>{{ image.description.captions[0].text | titlecase}}</p>
+      </div>
+      <div class="p-2 col">
+        <span>{{ image.similarity | percent }}</span>
+      </div>
+      <div class="p-2 col">
+        <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of image.tags.slice(0, 3)">
+          {{ tag.name }}</p>
+      </div>
+      <div class="p-2 col">
+        <button type="button" class="btn btn-outline-secondary me-1" (click)="openEditImageModal()">
+          <i class="bi bi-pencil-square"></i>
+        </button>
+        <a type="button" class="btn btn-download me-1" href="{{ image.url }}">
+          <i class="bi bi-cloud-download"></i>
+        </a>
+      </div>
     </div>
   </div>
 </div>
 <!-- Edit Modal -->
 <ng-template #EditNameModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">Modifier le nom de l'image</h4>
+    <h4 class="modal-title">Edit file name</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <form [formGroup]="EditImageNameForm">
     <div class="form-group">
       <div class="modal-body">
-        <label for="filter-name">Nouveau nom</label>
-        <input type="text" class="form-control" id="image-name" name="imageName"
-          formControlName="imageName">
+        <label for="filter-name">New name</label>
+        <input type="text" class="form-control" id="image-name" name="imageName" formControlName="imageName">
       </div>
     </div>
   </form>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="modal.dismiss()">Annuler</button>
-    <button type="button" class="btn btn-success">Enregistrer</button>
+    <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-secondary">Save</button>
   </div>
 </ng-template>
-<!-- display grid -->
-<div class="container-fluid" *ngIf="isGrid">
-  <div class="section-gray" (scroll)="onScroll($event)">
-    <div class="flex">
-      <div class="row">
-        <div class="col-md-3" *ngFor="let image of imagesList">
-          <div class="card mb-5">
-              <a [routerLink]="['/image-info', image._id.$oid]">
-                <div class="card-image">
-                <img class="img" [src]="image.url">
-              </div>
-              </a>
-            <div class="card-body">
-              <div class="card-title text-center">
-                <p class="badge rounded-pill bg-info me-1 my-auto text-dark" *ngFor="let tag of image.tags.slice(0, 3)">
-                  {{ tag.name }}</p>
-              </div>
-              <div class="card-text">
-                <p>{{ image.description.captions[0].text | titlecase }}</p>
-              </div>
-              <div class="row">
-                <p class="col my-auto">Fiabilité <span
-                    style="color:#6f42c1">{{ image.description.captions[0].confidence | percent }}</span></p>
-                <!-- Default dropup button -->
-                <div class="col text-end">
-                  <div ngbDropdown placement="top-end" class="d-inline-block">
-                    <button type="button" class="btn btn-signup" aria-haspopup="true"
-                      id="actionsDrop" aria-expanded="false" ngbDropdownToggle>
-                      Actions
-                    </button>
-                    <div ngbDropdownMenu="actionsDrop">
-                      <button ngbDropdownItem class="text-secondary" (click)="openEditImageModal()">Modifier</button>
-                      <button ngbDropdownItem class="text-danger" (click)="onDeleteImage(image._id.$oid)">Supprimer</button>
-                      <a type="button" ngbDropdownItem class="text-warning" href="{{ image.url }}">Télécharger</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- Delete Modal -->
+<ng-template #DeleteSelectedImageModal let-modal>
+  <div class="modal-header d-flex flex-column">
+    <img src="../../../assets/images/trash.png" class="container__image">
+    <strong>You're about to delete selected images</strong>
   </div>
-</div>
+  <div *ngIf="deletingInProgress" class="text-center text-muted mt-3">
+    Suppression en cours...
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">No, Keep it</button>
+    <button type="button" class="btn btn-danger" (click)="onDeleteSelectedImages()">Yes, Delete it</button>
+  </div>
+</ng-template>
+<ng-template #RecognitionFrame let-modal>
+  <!-- audio visualizer-->
+    <div class="text-center justify-content-center">
+      <iframe id="da-iframe" style="width: 50%;height: 500px;" src="https://audio-visualizer-weld.vercel.app/index.html" allow="microphone"
+        allowtransparency="true">
+      </iframe>
+    </div>
+</ng-template>
