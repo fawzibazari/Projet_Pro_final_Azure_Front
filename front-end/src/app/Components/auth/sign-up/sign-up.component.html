@@ -1,10 +1,10 @@
 <div class="container">
   <div class="row">
       <div class="col-md-11 mt-60 mx-md-auto">
-          <div class="login-box bg-white pl-lg-5 pl-0">
+          <div class="login-box blur pl-lg-5 pl-0">
               <div class="row no-gutters align-items-center">
                   <div class="col-md-6">
-                      <div class="form-wrap bg-white">
+                      <div class="form-wrap">
                           <h4 class="btm-sep pb-3 mb-5">Inscription</h4>
                           <form [formGroup]="signupForm" (ngSubmit)="signup()" novalidate>
                             <div class="form-group">
@@ -28,6 +28,9 @@
                   </div>
                   <div class="col-md-6">
                       <div class="content text-center">
+                        <div class="tech-talks">
+                          <img src="/assets/images/online_illustration.png" alt="">
+                        </div>
                           <div class="border-bottom pb-5 mb-5">
                               <h3 class="c-black pb-5">Vous avez déjà un compte ?</h3>
                               <a class="btn btn-login" [routerLink]="['/login']">Connexion</a>
