@@ -21,7 +21,8 @@ export class StatsComponent implements OnInit {
       this.imagesList = data.stats;
       const dates: any[] = [];
       const counts: any[] = [];
-
+      console.log(data);
+      
       this.imagesList.forEach((stat) => {
         dates.push(stat.date);
         counts.push(stat.count);
@@ -36,7 +37,7 @@ export class StatsComponent implements OnInit {
           datasets: [
             {
               label: 'Images',
-              data: counts,
+              data: counts.reverse(),
               backgroundColor: 'blue',
               pointStyle: 'circle',
               pointRadius: 10,
