@@ -28,7 +28,11 @@
           </div>
           <div class="modal-body">
             <!-- Afficher les images récupérées ici ! -->
-            <img [src]="imageSrc" class="img-thumbnail img-upload" />
+            <div class="row justify-content-around">
+              <div class="col-12 col-md-6 col-lg-3 pb-1" *ngFor="let img of uploadedImages">
+                  <img [src]="img" class="img-thumbnail img-upload" />
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <div class="spinner-border" role="status" *ngIf="loading">
