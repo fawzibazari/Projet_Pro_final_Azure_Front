@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { VoiceRecognitionService } from '../../Services/voice-recognition.service';
 
@@ -56,7 +57,7 @@ export class ImagesListComponent implements OnInit, OnDestroy {
     public imagesListService: ImagesListService,
     private router: Router,
     private modalService: NgbModal,
-    public voiceRecognitionService: VoiceRecognitionService
+    public voiceRecognitionService: VoiceRecognitionService,
   ) {
     this.voiceRecognitionService.init();
   }

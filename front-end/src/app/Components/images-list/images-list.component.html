@@ -7,19 +7,17 @@
         <input class="form-check-input" type="checkbox" name="selectAll" value="selectAll">
       </div>
       <div class="btn-group me-2" role="groupe" aria-label="Second group">
-        <label class="form-check-label my-auto" for="selectAll">Sélectionnés</label>
+        <label class="form-check-label my-auto" for="selectAll">Selected</label>
       </div>
       <div class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-outline-danger me-1" (click)="openDeleteSelectedImageModal()"><i class="bi bi-trash"></i></button>
+        <button type="button" class="btn btn-outline-danger me-1" (click)="openDeleteSelectedImageModal()"><i
+            class="bi bi-trash"></i></button>
       </div>
       <div class="btn-group me-2 w-50" role="group" aria-label="Fourth group">
-        <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher une image" [(ngModel)]="searchPhrase" (input)="onSearch()">
+        <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher une image"
+          [(ngModel)]="searchPhrase" (input)="onSearch()">
         <button class="btn btn-search" type="button" (click)="onSearch()"><i class="bi bi-search"></i></button>
-        <button
-          class="btn btn-mic"
-          type="button"
-          id="record"
-          (click)="toggleVoiceRecognition()">
+        <button class="btn btn-mic" type="button" id="record" (click)="toggleVoiceRecognition()" [attr.aria-expended]="isListening">
           <i [ngClass]="{'bi bi-mic-mute': isListening == false, 'bi bi-mic': isListening == true}"></i>
         </button>
       </div>
@@ -37,11 +35,11 @@
     </div>
   </div>
 </div>
-
-<!-- audio visualizer-->
-<iframe id="da-iframe" style="width: 50%;height: 500px;" src="https://audio-visualizer-weld.vercel.app/index.html" allow="microphone" allowtransparency="true">
-</iframe>
-
+<div class="text-center justify-content-center" #collapse="ngbCollapse" [ngbCollapse]="!isListening">
+  <iframe id="da-iframe" style="width: 50%;height: 400px;" src="https://audio-visualizer-weld.vercel.app/index.html" allow="microphone"
+    allowtransparency="true">
+  </iframe>
+</div>
 <!-- display loading -->
 <div class="text-center justify-content-center" *ngIf="isLoading">
   <div>
@@ -63,7 +61,8 @@
     <!-- flip-card-container -->
     <div class="wrapper">
       <div class="row justify-content-around">
-        <div class="col-12 col-md-6 col-lg-3 pb-5" ontouchstart="this.classList.toggle('hover');" *ngFor="let image of imagesList">
+        <div class="col-12 col-md-6 col-lg-3 pb-5" ontouchstart="this.classList.toggle('hover');"
+          *ngFor="let image of imagesList">
           <div class="container">
             <div class="front" style="background-image: url({{image.url}})">
               <div class="inner">
@@ -82,7 +81,7 @@
                 </div>
                 <div class="mt-1">
                   <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteImage(image._id.$oid)"><i
-                    class="bi bi-trash"></i></button>
+                      class="bi bi-trash"></i></button>
                   <a class="btn btn-download me-1" href="{{ image.url }}">
                     <i class="bi bi-cloud-download"></i> Download
                   </a>
@@ -104,7 +103,8 @@
     <!-- flip-card-container -->
     <div class="wrapper">
       <div class="row justify-content-around">
-        <div class="col-12 col-md-6 col-lg-3 pb-5" ontouchstart="this.classList.toggle('hover');" *ngFor="let image of imagesSimilarity">
+        <div class="col-12 col-md-6 col-lg-3 pb-5" ontouchstart="this.classList.toggle('hover');"
+          *ngFor="let image of imagesSimilarity">
           <div class="container">
             <div class="front" style="background-image: url({{image.url}})">
               <div class="inner">
@@ -124,7 +124,7 @@
                 </div>
                 <div class="mt-1">
                   <button type="button" class="btn btn-outline-danger me-1" (click)="onDeleteImage(image._id)"><i
-                    class="bi bi-trash"></i></button>
+                      class="bi bi-trash"></i></button>
                   <a class="btn btn-download me-1" href="{{ image.url }}">
                     <i class="bi bi-cloud-download"></i> Download
                   </a>
@@ -292,4 +292,12 @@
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">No, Keep it</button>
     <button type="button" class="btn btn-danger" (click)="onDeleteSelectedImages()">Yes, Delete it</button>
   </div>
+</ng-template>
+<ng-template #RecognitionFrame let-modal>
+  <!-- audio visualizer-->
+    <div class="text-center justify-content-center">
+      <iframe id="da-iframe" style="width: 50%;height: 500px;" src="https://audio-visualizer-weld.vercel.app/index.html" allow="microphone"
+        allowtransparency="true">
+      </iframe>
+    </div>
 </ng-template>
