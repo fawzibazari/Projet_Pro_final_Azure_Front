@@ -38,7 +38,7 @@ export class StatsComponent implements OnInit {
             {
               label: 'Images',
               data: counts.reverse(),
-              backgroundColor: 'blue',
+              backgroundColor: '#a67af6',
               pointStyle: 'circle',
               pointRadius: 10,
               pointHoverRadius: 15,

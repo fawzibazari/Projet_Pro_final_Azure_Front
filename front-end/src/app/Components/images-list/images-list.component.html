@@ -50,18 +50,9 @@
 </div>
 <!-- display loading -->
 <div class="text-center justify-content-center" *ngIf="isLoading">
-  <div>
-    Loading
-    <div class="spinner-grow spinner-grow-sm text-primary" role="status">
-      <span class="sr-only"></span>
-    </div>
-    <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
-      <span class="sr-only"></span>
-    </div>
-    <div class="spinner-grow spinner-grow-sm text-success" role="status">
-      <span class="sr-only"></span>
-    </div>
-  </div>
+  <canvas riv="checkerror" width="600" height="200">
+    <riv-animation name="Loading" play></riv-animation>
+  </canvas>
 </div>
 <!-- display grid -->
 <div class="container-fluid" *ngIf="isGrid && imagesProperty === 'all'">
@@ -107,13 +98,13 @@
   </div>
 </div>
 <div class="container-fluid" *ngIf="isGrid && imagesProperty === 'similarity'">
+  <div class="text-center" *ngIf="noImages">
+    <img src="../../../assets/images/no_result.png" class="container__image">
+    <p style="color: rgb(255, 217, 0); font-size: xx-large">No results found</p>
+    <p style="font-size: medium;">We couldn't find what you searched for.</p>
+    <p style="font-size: small;">Try searching again</p>
+  </div>
   <div class="section-gray scroll4" (scroll)="onScroll($event)">
-    <div class="text-center" *ngIf="noImages">
-      <img src="../../../assets/images/no_result.png" class="container__image">
-      <p style="color: rgb(255, 217, 0); font-size: xx-large">No results found</p>
-      <p style="font-size: medium;">We couldn't find what you searched for.</p>
-      <p style="font-size: small;">Try searching again</p>
-    </div>
     <!-- flip-card-container -->
     <div class="wrapper">
       <div class="row justify-content-around">
