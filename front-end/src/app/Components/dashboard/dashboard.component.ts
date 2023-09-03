@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {}
 
   handleInputChange(e: any) {
-
     this.uploadedImages = [];
     const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
 
@@ -50,42 +49,49 @@ export class DashboardComponent implements OnInit {
     // Réinitialisez le champ de fichier pour permettre de sélectionner à nouveau des images
     this.fileUpload.nativeElement.value = '';
     console.log(this.uploadedImages)
+    this.loaded = false;
+    console.log('handle input loaded bool ', this.loaded);
   }
 
   handleSubmit(e: any) {
     const url = this.DJANGO_SERVER + '/api/create';
+    this.loaded = false;
     this.loading = true;
 
-    for (let i = 0; i < this.uploadedImages.length; i++) {
-      const imageSrc = this.uploadedImages[i];
-      const fileName = 'image_' + Date.now() + '_' + i + '.png';
+    // Créez un tableau d'observables pour chaque image
+    const uploadObservables = this.uploadedImages.map((imageSrc, index) => {
+      const fileName = 'image_' + Date.now() + '_' + index + '.png';
       const extension = imageSrc.split(';')[0].split('/')[1];
-
-      // Supprimez le préfixe "data:image/png;base64,"
       const base64Image = imageSrc.split(',')[1];
 
-      this.httpClient
-        .post(url, {
-          filename: fileName,
-          extension: extension,
-          img: base64Image,
-        })
-        .subscribe(
-          (res) => {
-            console.log(res);
-          },
-          (err) => {
-            console.error(err);
-          }
-        );
-    }
+      return this.httpClient.post(url, {
+        filename: fileName,
+        extension: extension,
+        img: base64Image,
+      });
+    });
 
-    // Réinitialisez l'état après le téléchargement
-    this.loaded = true;
-    this.loading = false;
-    this.uploadedImages = []; // Effacez le tableau des images téléchargées
-    this.alertMessage = "Les images ont été chargées avec succès !";
-    this.inputValue = '';
+    // Utilisez forkJoin pour attendre que toutes les requêtes se terminent
+    forkJoin(uploadObservables).subscribe(
+      (responses) => {
+        console.log(responses);
+        // Toutes les images ont été téléchargées avec succès
+
+        // Réinitialisez l'état après le téléchargement
+        this.loaded = true;
+        this.loading = false;
+        this.uploadedImages = [];
+        this.alertMessage = "Les images ont été chargées avec succès !";
+        this.inputValue = '';
+      },
+      (err) => {
+        console.error(err);
+        this.alertMessage = "Une erreur s'est produite lors du chargement des images !";
+        this.loading = false;
+      }
+    );
+
+    this.modalService.dismissAll();
   }
   openUploadModal() {
     this.modalService.open(this.uploadModal, { centered: true });
