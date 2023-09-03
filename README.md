@@ -2,6 +2,15 @@
 
 
 
+## Installation
+```bash
+$ cd front-end
+$ npm install 
+```
+## Lancement de  l'application
+```bash
+ng serve
+```
 ### Roadmap :
 
-- [ ] compatibilité sur tous les navigateurs (pas que sur chrome 😅)
+- [x] compatibilité sur tous les navigateurs (pas que sur chrome 😅)
